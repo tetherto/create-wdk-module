@@ -1,3 +1,17 @@
+// Copyright 2024 Tether Operations Limited
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import fs from 'fs-extra'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -8,11 +22,26 @@ import { initGit, getGitAuthor, isGitAvailable } from './helpers/git.js'
 import { generatePackageName, toPascalCase } from './helpers/validate.js'
 import { detectPackageManager, getInstallCommand } from './helpers/install.js'
 
+/** @typedef {import('./config.js').ModuleType} ModuleType */
+
+/**
+ * @typedef {Object} CreateModuleOptions
+ * @property {ModuleType} type The module type to create.
+ * @property {string} name The module or protocol name.
+ * @property {string} [blockchain] The target blockchain.
+ * @property {string} [scope] The npm scope.
+ * @property {boolean} git Whether to initialize a git repository.
+ * @property {boolean} [skipInstall] Whether to skip dependency installation.
+ */
+
 const currentDir = path.dirname(fileURLToPath(import.meta.url))
 const TEMPLATES_DIR = path.resolve(currentDir, '../templates')
 
 /**
- * @param {import('./types.js').CreateModuleOptions} options
+ * Creates a new WDK module from templates.
+ *
+ * @param {CreateModuleOptions} options The module creation options.
+ * @returns {Promise<void>}
  */
 export async function createModule (options) {
   const { type, name, blockchain, scope, git } = options
@@ -100,10 +129,12 @@ export async function createModule (options) {
 }
 
 /**
- * @param {string} type
- * @param {string} className
- * @param {string} blockchain
- * @returns {string}
+ * Generates a human-readable description for the module.
+ *
+ * @param {string} type The module type.
+ * @param {string} className The PascalCase class name.
+ * @param {string} blockchain The target blockchain name.
+ * @returns {string} The generated description.
  */
 function generateDescription (type, className, blockchain) {
   switch (type) {

@@ -1,15 +1,37 @@
+// Copyright 2024 Tether Operations Limited
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import prompts from 'prompts'
-import { MODULE_CONFIGS } from './types.js'
+import { MODULE_CONFIGS } from './config.js'
 import { validateModuleName, validateScope } from './helpers/validate.js'
 
+/** @typedef {import('./create-module.js').CreateModuleOptions} CreateModuleOptions */
+
 /**
- * @param {Object} partial
- * @param {string} [partial.type]
- * @param {string} [partial.name]
- * @param {string} [partial.blockchain]
- * @param {string} [partial.scope]
- * @param {boolean} [partial.git]
- * @returns {Promise<import('./types.js').CreateModuleOptions>}
+ * @typedef {Object} PartialModuleOptions
+ * @property {string} [type] The module type.
+ * @property {string} [name] The module or protocol name.
+ * @property {string} [blockchain] The target blockchain.
+ * @property {string} [scope] The npm scope.
+ * @property {boolean} [git] Whether to initialize a git repository.
+ */
+
+/**
+ * Runs interactive prompts to collect missing module creation options.
+ *
+ * @param {PartialModuleOptions} partial The partially filled options from CLI arguments.
+ * @returns {Promise<CreateModuleOptions>} The complete module creation options.
  */
 export async function runPrompts (partial) {
   const onCancel = () => {

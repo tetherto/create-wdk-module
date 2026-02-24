@@ -19,7 +19,7 @@ import pc from 'picocolors'
 import { createModule } from './create-module.js'
 import { runPrompts } from './prompts.js'
 import { validateModuleType, validateModuleName } from './helpers/validate.js'
-import { MODULE_CONFIGS } from './types.js'
+import { MODULE_CONFIGS } from './config.js'
 
 const program = new Command()
 

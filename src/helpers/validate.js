@@ -1,17 +1,35 @@
+// Copyright 2024 Tether Operations Limited
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import validateNpmPackageName from 'validate-npm-package-name'
-import { MODULE_CONFIGS } from '../types.js'
+import { MODULE_CONFIGS } from '../config.js'
 
 /**
- * @param {string} type
- * @returns {boolean}
+ * Validates whether the given type is a supported module type.
+ *
+ * @param {string} type The module type to validate.
+ * @returns {boolean} Whether the type is valid.
  */
 export function validateModuleType (type) {
   return ['wallet', 'swap', 'bridge', 'lending', 'fiat'].includes(type)
 }
 
 /**
- * @param {string} name
- * @returns {{ valid: boolean, errors: string[] }}
+ * Validates a module name against naming conventions.
+ *
+ * @param {string} name The module name to validate.
+ * @returns {{ valid: boolean, errors: string[] }} The validation result with any errors.
  */
 export function validateModuleName (name) {
   const errors = []
@@ -32,8 +50,10 @@ export function validateModuleName (name) {
 }
 
 /**
- * @param {string} scope
- * @returns {{ valid: boolean, errors: string[] }}
+ * Validates an npm scope string.
+ *
+ * @param {string} scope The npm scope to validate.
+ * @returns {{ valid: boolean, errors: string[] }} The validation result with any errors.
  */
 export function validateScope (scope) {
   const errors = []
@@ -53,11 +73,14 @@ export function validateScope (scope) {
 }
 
 /**
- * @param {string} type
- * @param {string} name
- * @param {string} [blockchain]
- * @param {string} [scope]
- * @returns {string}
+ * Generates a full package name from module options.
+ *
+ * @param {string} type The module type.
+ * @param {string} name The module or protocol name.
+ * @param {string} [blockchain] The target blockchain.
+ * @param {string} [scope] The npm scope.
+ * @returns {string} The generated package name.
+ * @throws {Error} If blockchain is required but not provided.
  */
 export function generatePackageName (type, name, blockchain, scope) {
   const config = MODULE_CONFIGS[type]
@@ -78,8 +101,10 @@ export function generatePackageName (type, name, blockchain, scope) {
 }
 
 /**
- * @param {string} str
- * @returns {string}
+ * Converts a hyphen-separated string to PascalCase.
+ *
+ * @param {string} str The hyphen-separated string.
+ * @returns {string} The PascalCase string.
  */
 export function toPascalCase (str) {
   return str
