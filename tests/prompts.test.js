@@ -1,9 +1,13 @@
 import { jest } from '@jest/globals'
 
 let mockPromptsReturn = {}
+let mockOnCancel = null
 
 jest.unstable_mockModule('prompts', () => ({
-  default: async () => mockPromptsReturn
+  default: jest.fn(async (_questions, opts) => {
+    mockOnCancel = opts?.onCancel
+    return mockPromptsReturn
+  })
 }))
 
 const { runPrompts } = await import('../src/prompts.js')
@@ -11,23 +15,30 @@ const { runPrompts } = await import('../src/prompts.js')
 describe('runPrompts', () => {
   beforeEach(() => {
     mockPromptsReturn = {}
+    mockOnCancel = null
   })
 
-  it('should use partial values when provided', async () => {
-    mockPromptsReturn = { git: true }
+  test('should return partial values without prompting when all options are provided', async () => {
+    mockPromptsReturn = {}
 
     const result = await runPrompts({
       type: 'wallet',
       name: 'stellar',
-      scope: '@test'
+      blockchain: undefined,
+      scope: '@tetherto',
+      git: true
     })
 
-    expect(result.type).toBe('wallet')
-    expect(result.name).toBe('stellar')
-    expect(result.scope).toBe('@test')
+    expect(result).toEqual({
+      type: 'wallet',
+      name: 'stellar',
+      blockchain: undefined,
+      scope: '@tetherto',
+      git: true
+    })
   })
 
-  it('should use answers from prompts when no partials', async () => {
+  test('should merge prompt answers with missing partial values', async () => {
     mockPromptsReturn = {
       type: 'fiat',
       name: 'moonpay',
@@ -42,7 +53,7 @@ describe('runPrompts', () => {
     expect(result.git).toBe(false)
   })
 
-  it('should default git to true when not answered', async () => {
+  test('should default git to true when neither partial nor prompt provides it', async () => {
     mockPromptsReturn = {
       type: 'wallet',
       name: 'stellar'
@@ -53,7 +64,7 @@ describe('runPrompts', () => {
     expect(result.git).toBe(true)
   })
 
-  it('should handle blockchain answer from prompt', async () => {
+  test('should use the blockchain answer from prompts for protocol modules', async () => {
     mockPromptsReturn = {
       type: 'swap',
       name: 'jupiter',
@@ -66,7 +77,7 @@ describe('runPrompts', () => {
     expect(result.blockchain).toBe('solana')
   })
 
-  it('should handle custom blockchain', async () => {
+  test('should use the custom blockchain when _custom is selected', async () => {
     mockPromptsReturn = {
       type: 'swap',
       name: 'jupiter',
@@ -78,5 +89,15 @@ describe('runPrompts', () => {
     const result = await runPrompts({})
 
     expect(result.blockchain).toBe('mychain')
+  })
+
+  test('should throw cancelled when the user cancels the prompts', async () => {
+    mockPromptsReturn = {}
+
+    const promise = runPrompts({})
+    await promise
+
+    expect(mockOnCancel).toBeInstanceOf(Function)
+    expect(() => mockOnCancel()).toThrow('cancelled')
   })
 })

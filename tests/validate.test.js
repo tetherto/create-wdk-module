@@ -7,7 +7,7 @@ import {
 } from '../src/helpers/validate.js'
 
 describe('validateModuleType', () => {
-  it('should accept valid types', () => {
+  test('should return true when given a valid module type', () => {
     expect(validateModuleType('wallet')).toBe(true)
     expect(validateModuleType('swap')).toBe(true)
     expect(validateModuleType('bridge')).toBe(true)
@@ -15,76 +15,150 @@ describe('validateModuleType', () => {
     expect(validateModuleType('fiat')).toBe(true)
   })
 
-  it('should reject invalid types', () => {
+  test('should return false when given an unknown type', () => {
     expect(validateModuleType('invalid')).toBe(false)
+  })
+
+  test('should return false when given an empty string', () => {
     expect(validateModuleType('')).toBe(false)
+  })
+
+  test('should return false when given an uppercase variant', () => {
     expect(validateModuleType('WALLET')).toBe(false)
   })
 })
 
 describe('validateModuleName', () => {
-  it('should accept valid names', () => {
-    expect(validateModuleName('stellar').valid).toBe(true)
-    expect(validateModuleName('jupiter').valid).toBe(true)
-    expect(validateModuleName('my-protocol').valid).toBe(true)
-    expect(validateModuleName('protocol123').valid).toBe(true)
+  test('should return valid when given a lowercase alphabetic name', () => {
+    const result = validateModuleName('stellar')
+
+    expect(result).toEqual({ valid: true, errors: [] })
   })
 
-  it('should reject invalid names', () => {
-    expect(validateModuleName('').valid).toBe(false)
-    expect(validateModuleName('Invalid').valid).toBe(false)
-    expect(validateModuleName('123start').valid).toBe(false)
-    expect(validateModuleName('has space').valid).toBe(false)
+  test('should return valid when given a hyphenated name', () => {
+    const result = validateModuleName('my-protocol')
+
+    expect(result).toEqual({ valid: true, errors: [] })
   })
 
-  it('should reject names over 50 characters', () => {
+  test('should return valid when given an alphanumeric name', () => {
+    const result = validateModuleName('protocol123')
+
+    expect(result).toEqual({ valid: true, errors: [] })
+  })
+
+  test('should return invalid when given an empty string', () => {
+    const result = validateModuleName('')
+
+    expect(result.valid).toBe(false)
+    expect(result.errors.length).toBeGreaterThan(0)
+  })
+
+  test('should return invalid when given a name starting with a number', () => {
+    const result = validateModuleName('123start')
+
+    expect(result.valid).toBe(false)
+  })
+
+  test('should return invalid when given an uppercase name', () => {
+    const result = validateModuleName('Invalid')
+
+    expect(result.valid).toBe(false)
+  })
+
+  test('should return invalid when given a name with spaces', () => {
+    const result = validateModuleName('has space')
+
+    expect(result.valid).toBe(false)
+  })
+
+  test('should return invalid when given a name exceeding 50 characters', () => {
     const longName = 'a'.repeat(51)
-    expect(validateModuleName(longName).valid).toBe(false)
+
+    const result = validateModuleName(longName)
+
+    expect(result.valid).toBe(false)
+  })
+
+  test('should include a descriptive error message for invalid names', () => {
+    const result = validateModuleName('Invalid')
+
+    expect(result.errors[0]).toBe(
+      'Module name must start with a letter and contain only lowercase letters, numbers, and hyphens'
+    )
   })
 })
 
 describe('validateScope', () => {
-  it('should accept valid scopes', () => {
-    expect(validateScope('@myorg').valid).toBe(true)
-    expect(validateScope('@tetherto').valid).toBe(true)
-    expect(validateScope('').valid).toBe(true) // Empty is valid
+  test('should return valid when given a scope starting with @', () => {
+    const result = validateScope('@myorg')
+
+    expect(result).toEqual({ valid: true, errors: [] })
   })
 
-  it('should reject invalid scopes', () => {
-    expect(validateScope('myorg').valid).toBe(false) // Missing @
+  test('should return valid when given an empty string', () => {
+    const result = validateScope('')
+
+    expect(result).toEqual({ valid: true, errors: [] })
+  })
+
+  test('should return invalid when given a scope without the @ prefix', () => {
+    const result = validateScope('myorg')
+
+    expect(result.valid).toBe(false)
+    expect(result.errors[0]).toBe('Scope must start with @')
   })
 })
 
 describe('generatePackageName', () => {
-  it('should generate correct wallet package name', () => {
-    expect(generatePackageName('wallet', 'stellar')).toBe('wdk-wallet-stellar')
-    expect(generatePackageName('wallet', 'stellar', undefined, '@myorg'))
-      .toBe('@myorg/wdk-wallet-stellar')
+  test('should generate a wallet package name from the chain name', () => {
+    const result = generatePackageName('wallet', 'stellar')
+
+    expect(result).toBe('wdk-wallet-stellar')
   })
 
-  it('should generate correct swap package name', () => {
-    expect(generatePackageName('swap', 'jupiter', 'solana'))
-      .toBe('wdk-protocol-swap-jupiter-solana')
+  test('should prepend the scope to a wallet package name', () => {
+    const result = generatePackageName('wallet', 'stellar', undefined, '@myorg')
+
+    expect(result).toBe('@myorg/wdk-wallet-stellar')
   })
 
-  it('should generate correct bridge package name', () => {
-    expect(generatePackageName('bridge', 'wormhole', 'evm'))
-      .toBe('wdk-protocol-bridge-wormhole-evm')
+  test('should generate a swap package name from protocol and blockchain', () => {
+    const result = generatePackageName('swap', 'jupiter', 'solana')
+
+    expect(result).toBe('wdk-protocol-swap-jupiter-solana')
   })
 
-  it('should generate correct fiat package name', () => {
-    expect(generatePackageName('fiat', 'moonpay')).toBe('wdk-protocol-fiat-moonpay')
+  test('should generate a bridge package name from protocol and blockchain', () => {
+    const result = generatePackageName('bridge', 'wormhole', 'evm')
+
+    expect(result).toBe('wdk-protocol-bridge-wormhole-evm')
   })
 
-  it('should throw when blockchain missing for protocol modules', () => {
-    expect(() => generatePackageName('swap', 'jupiter')).toThrow('Blockchain is required')
+  test('should generate a lending package name from protocol and blockchain', () => {
+    const result = generatePackageName('lending', 'compound', 'evm')
+
+    expect(result).toBe('wdk-protocol-lending-compound-evm')
+  })
+
+  test('should generate a fiat package name from the provider name', () => {
+    const result = generatePackageName('fiat', 'moonpay')
+
+    expect(result).toBe('wdk-protocol-fiat-moonpay')
+  })
+
+  test('should throw with a descriptive message when blockchain is missing for a protocol module', () => {
+    expect(() => generatePackageName('swap', 'jupiter'))
+      .toThrow('Blockchain is required for swap modules')
   })
 })
 
 describe('toPascalCase', () => {
-  it('should convert to PascalCase', () => {
+  test('should capitalize a single lowercase word', () => {
     expect(toPascalCase('stellar')).toBe('Stellar')
-    expect(toPascalCase('my-protocol')).toBe('MyProtocol')
+  })
+
+  test('should capitalize each segment of a hyphenated string', () => {
     expect(toPascalCase('jupiter-swap')).toBe('JupiterSwap')
   })
 })
