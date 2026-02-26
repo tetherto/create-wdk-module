@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import validateNpmPackageName from 'validate-npm-package-name'
-import { MODULE_CONFIGS } from '../config.js'
+'use strict'
+
+const MODULE_NAME_PATTERN = /^[a-z][a-z0-9-.]*$/
 
 /**
  * Validates whether the given type is a supported module type.
@@ -26,47 +27,44 @@ export function validateModuleType (type) {
 }
 
 /**
- * Validates a module name against naming conventions.
- *
- * @param {string} name The module name to validate.
- * @returns {{ valid: boolean, errors: string[] }} The validation result with any errors.
- */
-export function validateModuleName (name) {
-  const errors = []
-
-  if (!name || name.trim() === '') {
-    errors.push('Module name cannot be empty')
-  }
-
-  if (!/^[a-z][a-z0-9-]*$/.test(name)) {
-    errors.push('Module name must start with a letter and contain only lowercase letters, numbers, and hyphens')
-  }
-
-  if (name.length > 50) {
-    errors.push('Module name must be 50 characters or less')
-  }
-
-  return { valid: errors.length === 0, errors }
-}
-
-/**
  * Validates an npm scope string.
  *
- * @param {string} scope The npm scope to validate.
+ * @param {string} scope - The npm scope to validate.
  * @returns {{ valid: boolean, errors: string[] }} The validation result with any errors.
  */
 export function validateScope (scope) {
   const errors = []
 
-  if (scope !== '' && !scope.startsWith('@')) {
-    errors.push('Scope must start with @')
+  if (!scope.startsWith('@')) {
+    errors.push('Scopes must start with @')
   }
 
-  if (scope !== '') {
-    const result = validateNpmPackageName(`${scope}/test`)
-    if (!result.validForNewPackages) {
-      errors.push(...(result.errors ?? []))
-    }
+  const { errors: otherErrors } = validateModuleName(scope.slice(1))
+
+  errors.push(...otherErrors.map(error => error.replace('Module name', 'Scope')))
+
+  return { valid: errors.length === 0, errors }
+}
+
+/**
+ * Validates a module name against naming conventions.
+ *
+ * @param {string} name - The module name to validate.
+ * @returns {{ valid: boolean, errors: string[] }} The validation result with any errors.
+ */
+export function validateModuleName (name) {
+  const errors = []
+
+  if (!name) {
+    errors.push('Module names cannot be empty')
+  }
+
+  if (!MODULE_NAME_PATTERN.test(name)) {
+    errors.push('Module names must start with a letter and contain only lowercase letters, numbers, and hyphens.')
+  }
+
+  if (name.length > 50) {
+    errors.push('Module names cannot be longer than 50 characters')
   }
 
   return { valid: errors.length === 0, errors }

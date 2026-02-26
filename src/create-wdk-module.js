@@ -12,20 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+'use strict'
+
 import path from 'path'
 import { fileURLToPath } from 'url'
 
 import ora from 'ora'
 import pc from 'picocolors'
 import { compileTemplate } from './compile-template.js'
-import { gitInit, getGitAuthor, isGitAvailable } from './git.js'
+import { gitInit, getGitAuthor, isGitAvailable } from './utilities/git.js'
 
 /**
  * @typedef {'wallet' | 'swap' | 'bridge' | 'lending' | 'fiat'} ModuleType
  */
 
 /**
- * @typedef {CreateWdkModuleCommonOptions & (CreateWdkModuleWalletOptions | CreateWdkModuleProtocolOptions)} CreateWdkModuleOptions
+ * @typedef {CreateWdkModuleCommonOptions & (CreateWdkModuleWalletOptions | CreateWdkModuleProtocolOptions | CreateWdkModuleFiatProviderOptions)} CreateWdkModuleOptions
  */
 
 /**
@@ -42,9 +44,15 @@ import { gitInit, getGitAuthor, isGitAvailable } from './git.js'
 
 /**
  * @typedef {Object} CreateWdkModuleProtocolOptions
- * @property {'swap' | 'bridge' | 'lending' | 'fiat'} type - The module type to create.
+ * @property {'swap' | 'bridge' | 'lending'} type - The module type to create.
  * @property {string} name - The protocol's name.
- * @property {string} [blockchain] - The target blockchain.
+ * @property {string} blockchain - The target blockchain.
+ */
+
+/**
+ * @typedef {Object} CreateWdkModuleFiatProviderOptions
+ * @property {'fiat'} type - The module type to create.
+ * @property {string} name - The fiat provider's name.
  */
 
 const ROOT_DIR = path.dirname(fileURLToPath(import.meta.url))
@@ -54,7 +62,7 @@ const TEMPLATES_DIR = path.resolve(ROOT_DIR, '../templates')
 /**
  * Generates a full package name from module options.
  *
- * @param {Omit<CreateModuleWdkOptions, 'git'>} options - The module options.
+ * @param {Omit<CreateWdkModuleOptions, 'git'>} options - The module options.
  * @returns {string} The package name.
  */
 function generatePackageName ({ type, name, blockchain, scope }) {
@@ -65,8 +73,15 @@ function generatePackageName ({ type, name, blockchain, scope }) {
       packageName = `wdk-wallet-${name}`
       break
 
-    default:
-      packageName `wdk-protocol-${type}-${name}${blockchain ? `-${blockchain}` : ''}`
+    case 'swap':
+    case 'bridge':
+    case 'lending':
+      packageName = `wdk-protocol-${type}-${name}-${blockchain}`
+      break
+
+    case 'fiat':
+      packageName = `wdk-protocol-fiat-${name}`
+      break
   }
 
   if (scope) {
@@ -88,10 +103,13 @@ function generateDescription (type, { name, blockchain }) {
     case 'wallet':
       return `WDK module to create and manage BIP-32 wallets for the ${name} blockchain.`
 
-    default:
-      return blockchain
-        ? `WDK module to make ${blockchain} BIP-32 wallets interact with the ${name} ${type} protocol.`
-        : `WDK module to interact with the ${name} ${type} protocol.`
+    case 'swap':
+    case 'bridge':
+    case 'lending':
+      return `WDK module to make ${blockchain} BIP-32 wallets interact with the ${name} ${type} protocol.`
+
+    case 'fiat':
+      return `WDK module to interact with the ${name} fiat provider.`
   }
 }
 
@@ -134,7 +152,7 @@ function getInstallCommand (packageManager) {
 /**
  * Creates a new wallet development kit module from templates.
  *
- * @param {CreateModuleWdkOptions} options - The module options.
+ * @param {CreateWdkModuleOptions} options - The module options.
  * @returns {Promise<void>}
  */
 export async function createWdkModule (options) {

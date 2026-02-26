@@ -14,13 +14,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+'use strict'
+
 import pc from 'picocolors'
 
 import { Command } from 'commander'
 
-import { runPrompts } from './prompts.js'
-import { validateModuleType, validateModuleName } from './validation.js'
+import { runPrompts } from './run-prompts.js'
 import { createWdkModule } from './create-wdk-module.js'
+import { validateModuleType, validateModuleName, validateScope } from './utilities/validation.js'
+
+import { CancelError } from './errors.js'
 
 const program = new Command()
 
@@ -34,71 +38,54 @@ program
   .option('-s, --scope <scope>', 'npm scope (e.g., @myorg)')
   .option('--git', 'Initialize git repository', true)
   .option('--no-git', 'Skip git initialization')
-  .option('-y, --yes', 'Skip prompts and use defaults', false)
-  .action(async (type, name, blockchain, { scope, git, yes }) => {
-    console.log()
-    console.log(pc.bold('  Create WDK Module'))
-    console.log()
+  .action(async (type, name, blockchain, { scope, git }) => {
+    if (type && !validateModuleType(type)) {
+      console.error(pc.red(`Invalid module type: ${type}`))
+      console.error(pc.dim('Valid types: wallet, swap, bridge, lending, fiat'))
+      process.exit(1)
+    }
+
+    if (name) {
+      const { valid, errors } = validateModuleName(name)
+
+      if (!valid) {
+        console.error(pc.red('Invalid module name:'))
+        errors.forEach(error => console.error(pc.red(`  - ${error}`)))
+        process.exit(1)
+      }
+    }
+    
+    if (blockchain) {
+      const { valid, errors } = validateModuleName(blockchain)
+
+      if (!valid) {
+        console.error(pc.red('Invalid blockchain:'))
+        errors.forEach(error => console.error(pc.red(`  - ${error}`)))
+        process.exit(1)
+      }
+    }
+
+    if (scope) {
+      const { valid, errors } = validateScope(scope)
+
+      if (!valid) {
+        console.error(pc.red('Invalid scope:'))
+        errors.forEach(error => console.error(pc.red(`  - ${error}`)))
+        process.exit(1)
+      }
+    }
 
     try {
-      let moduleOptions
+      const options = await runPrompts({ type, name, blockchain, scope, git })
 
-      if (type != null && name != null && yes) {
-        if (!validateModuleType(type)) {
-          console.error(pc.red(`Invalid module type: ${type}`))
-          console.error(pc.dim('Valid types: wallet, swap, bridge, lending, fiat'))
-          process.exit(1)
-        }
-
-        const nameValidation = validateModuleName(name)
-        if (!nameValidation.valid) {
-          console.error(pc.red('Invalid module name:'))
-          nameValidation.errors.forEach(e => console.error(pc.red(`  - ${e}`)))
-          process.exit(1)
-        }
-
-        if (['swap', 'bridge', 'lending', 'fiat'].includes(type)) {
-          if (!blockchain) {
-            console.error(pc.red(`Blockchain argument is required for ${type} modules`))
-            console.error(pc.dim(`Usage: create-wdk-module ${type} <name> <blockchain>`))
-            process.exit(1)
-          }
-
-          const blockchainValidation = validateModuleName(blockchain)
-
-          if (!blockchainValidation.valid) {
-            console.error(pc.red('Invalid blockchain:'))
-            blockchainValidation.errors.forEach(e => console.error(pc.red(`  - ${e}`)))
-            process.exit(1)
-          }
-        }
-
-        moduleOptions = { type, name, blockchain, scope, git }
-      } else if (type != null && name != null) {
-        if (!validateModuleType(type)) {
-          console.error(pc.red(`Invalid module type: ${type}`))
-          console.error(pc.dim('Valid types: wallet, swap, bridge, lending, fiat'))
-          process.exit(1)
-        }
-
-        const nameValidation = validateModuleName(name)
-        if (!nameValidation.valid) {
-          console.error(pc.red('Invalid module name:'))
-          nameValidation.errors.forEach(e => console.error(pc.red(`  - ${e}`)))
-          process.exit(1)
-        }
-
-        moduleOptions = await runPrompts({ type, name, blockchain, scope, git })
-      } else {
-        moduleOptions = await runPrompts({ type, name, blockchain, scope, git })
-      }
-
-      await createWdkModule(moduleOptions)
+      await createWdkModule(options)
     } catch (error) {
-      if (error.message === 'cancelled') {
+      if (error instanceof CancelError) {
         console.log(pc.dim('\nOperation cancelled'))
+
         process.exit(0)
       }
+
       throw error
     }
   })
