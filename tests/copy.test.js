@@ -16,10 +16,10 @@ const { copyTemplate, copyCommonFiles } = await import('../src/helpers/copy.js')
 const TEMPLATE_DIR = '/templates/wallet'
 const TARGET_DIR = '/output/wdk-wallet-stellar'
 const TEMPLATE_CONTEXT = {
-  MODULE_NAME: 'wdk-wallet-stellar',
+  PACKAGE_NAME: 'wdk-wallet-stellar',
   CLASS_NAME: 'Stellar',
   CLASS_NAME_LOWER: 'stellar',
-  PACKAGE_NAME: 'wdk-wallet-stellar',
+  MODULE_NAME: 'wdk-wallet-stellar',
   BLOCKCHAIN: 'stellar',
   DESCRIPTION: 'Stellar wallet module for WDK',
   YEAR: '2025',
@@ -37,7 +37,7 @@ describe('copyTemplate', () => {
 
   test('should replace placeholders in file content when copying text files', async () => {
     mockFs.readdir.mockResolvedValue([createDirent('index.js', false)])
-    mockFs.readFile.mockResolvedValue('module: {{MODULE_NAME}}, class: {{CLASS_NAME}}')
+    mockFs.readFile.mockResolvedValue('module: {{PACKAGE_NAME}}, class: {{CLASS_NAME}}')
 
     await copyTemplate(TEMPLATE_DIR, TARGET_DIR, TEMPLATE_CONTEXT)
 

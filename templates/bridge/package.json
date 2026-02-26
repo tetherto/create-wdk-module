@@ -1,5 +1,5 @@
 {
-  "name": "{{MODULE_NAME}}",
+  "name": "{{PACKAGE_NAME}}",
   "version": "1.0.0-beta.1",
   "description": "{{DESCRIPTION}}",
   "keywords": ["wdk", "bridge", "cross-chain", "{{BLOCKCHAIN}}"],
@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/YOUR_ORG/{{PACKAGE_NAME}}.git"
+    "url": "git://github.com/YOUR_ORG/{{MODULE_NAME}}.git"
   },
   "main": "index.js",
   "type": "module",

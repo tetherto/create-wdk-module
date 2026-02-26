@@ -17,33 +17,27 @@ import { execSync } from 'child_process'
 /**
  * Initializes a git repository with an initial commit.
  *
- * @param {string} targetDir The directory to initialize git in.
+ * @param {string} targetDir - The directory to initialize git in.
+ * @throws {Error} If it wasn't possible to initialize the git repository.
  */
-export function initGit (targetDir) {
-  try {
-    execSync('git init', { cwd: targetDir, stdio: 'ignore' })
-    execSync('git add -A', { cwd: targetDir, stdio: 'ignore' })
-    execSync('git commit -m "Initial commit from create-wdk-module"', {
-      cwd: targetDir,
-      stdio: 'ignore'
-    })
-  } catch {
-    // Git init failed, but we can continue without it
-  }
+export function gitInit (targetDir) {
+  execSync('git init', { cwd: targetDir, stdio: 'ignore' })
+  execSync('git add -A', { cwd: targetDir, stdio: 'ignore' })
+  execSync('git commit -m "Initial commit from create-wdk-module"', { cwd: targetDir, stdio: 'ignore' })
 }
 
 /**
- * Reads the git author name and email from git config.
+ * Reads the git author name and e-mail from git config.
  *
- * @returns {string} The formatted author string, or 'Your Name' as fallback.
+ * @returns {string} The author string ('Your Name <Your E-Mail>' if it wasn't possible to retrieve the git configuration).
  */
 export function getGitAuthor () {
   try {
     const name = execSync('git config user.name', { encoding: 'utf-8' }).trim()
     const email = execSync('git config user.email', { encoding: 'utf-8' }).trim()
-    return email !== '' ? `${name} <${email}>` : name
+    return email ? `${name} <${email}>` : name
   } catch {
-    return 'Your Name'
+    return 'Your Name <Your E-Mail>'
   }
 }
 

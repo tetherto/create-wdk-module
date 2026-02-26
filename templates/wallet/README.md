@@ -1,17 +1,17 @@
-# {{MODULE_NAME}}
+# {{PACKAGE_NAME}}
 
 {{DESCRIPTION}}
 
 ## Installation
 
 ```bash
-npm install {{MODULE_NAME}}
+npm install {{PACKAGE_NAME}}
 ```
 
 ## Usage
 
 ```javascript
-import WalletManager{{CLASS_NAME}} from '{{MODULE_NAME}}'
+import WalletManager{{CLASS_NAME}} from '{{PACKAGE_NAME}}'
 
 // Create wallet from mnemonic
 const wallet = new WalletManager{{CLASS_NAME}}('your twelve word mnemonic phrase here ...')

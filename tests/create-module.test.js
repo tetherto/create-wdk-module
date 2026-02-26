@@ -41,7 +41,7 @@ function setupTemplateFs () {
     .mockResolvedValueOnce(true)
     .mockResolvedValueOnce(true)
   mockFs.readdir.mockResolvedValue([createDirent('index.js', false)])
-  mockFs.readFile.mockResolvedValue('{{MODULE_NAME}}')
+  mockFs.readFile.mockResolvedValue('{{PACKAGE_NAME}}')
 }
 
 describe('createModule', () => {

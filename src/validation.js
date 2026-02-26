@@ -18,7 +18,7 @@ import { MODULE_CONFIGS } from '../config.js'
 /**
  * Validates whether the given type is a supported module type.
  *
- * @param {string} type The module type to validate.
+ * @param {string} type - The module type to validate.
  * @returns {boolean} Whether the type is valid.
  */
 export function validateModuleType (type) {
@@ -34,7 +34,7 @@ export function validateModuleType (type) {
 export function validateModuleName (name) {
   const errors = []
 
-  if (name === '' || name.trim() === '') {
+  if (!name || name.trim() === '') {
     errors.push('Module name cannot be empty')
   }
 
@@ -70,45 +70,4 @@ export function validateScope (scope) {
   }
 
   return { valid: errors.length === 0, errors }
-}
-
-/**
- * Generates a full package name from module options.
- *
- * @param {string} type The module type.
- * @param {string} name The module or protocol name.
- * @param {string} [blockchain] The target blockchain.
- * @param {string} [scope] The npm scope.
- * @returns {string} The generated package name.
- * @throws {Error} If blockchain is required but not provided.
- */
-export function generatePackageName (type, name, blockchain, scope) {
-  const config = MODULE_CONFIGS[type]
-  let packageName
-
-  if (type === 'wallet') {
-    packageName = `${config.prefix}${name}`
-  } else if (type === 'fiat') {
-    packageName = `${config.prefix}${name}`
-  } else {
-    if (blockchain == null || blockchain === '') {
-      throw new Error(`Blockchain is required for ${type} modules`)
-    }
-    packageName = `${config.prefix}${name}-${blockchain}`
-  }
-
-  return scope != null && scope !== '' ? `${scope}/${packageName}` : packageName
-}
-
-/**
- * Converts a hyphen-separated string to PascalCase.
- *
- * @param {string} str The hyphen-separated string.
- * @returns {string} The PascalCase string.
- */
-export function toPascalCase (str) {
-  return str
-    .split('-')
-    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-    .join('')
 }

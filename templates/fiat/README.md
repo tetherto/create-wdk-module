@@ -1,17 +1,17 @@
-# {{MODULE_NAME}}
+# {{PACKAGE_NAME}}
 
 {{DESCRIPTION}}
 
 ## Installation
 
 ```bash
-npm install {{MODULE_NAME}}
+npm install {{PACKAGE_NAME}}
 ```
 
 ## Usage
 
 ```javascript
-import {{CLASS_NAME}}Provider from '{{MODULE_NAME}}'
+import {{CLASS_NAME}}Provider from '{{PACKAGE_NAME}}'
 
 // Create fiat provider (account is optional for quotes)
 const fiatProvider = new {{CLASS_NAME}}Provider(undefined, {

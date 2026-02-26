@@ -31,12 +31,12 @@ describe('create-wdk-module', () => {
   })
 
   describe('wallet module', () => {
-    const MODULE_NAME = 'stellar'
+    const PACKAGE_NAME = 'stellar'
     const EXPECTED_PACKAGE_NAME = 'wdk-wallet-stellar'
     const EXPECTED_DESCRIPTION = 'Stellar wallet module for WDK'
 
     beforeEach(async () => {
-      await createModule({ type: 'wallet', name: MODULE_NAME, git: false })
+      await createModule({ type: 'wallet', name: PACKAGE_NAME, git: false })
       outputDir = path.join(outputDir, EXPECTED_PACKAGE_NAME)
     })
 
@@ -93,13 +93,13 @@ describe('create-wdk-module', () => {
   })
 
   describe('swap module', () => {
-    const MODULE_NAME = 'jupiter'
+    const PACKAGE_NAME = 'jupiter'
     const BLOCKCHAIN = 'solana'
     const EXPECTED_PACKAGE_NAME = 'wdk-protocol-swap-jupiter-solana'
     const EXPECTED_DESCRIPTION = 'Jupiter swap protocol integration for WDK on solana'
 
     beforeEach(async () => {
-      await createModule({ type: 'swap', name: MODULE_NAME, blockchain: BLOCKCHAIN, git: false })
+      await createModule({ type: 'swap', name: PACKAGE_NAME, blockchain: BLOCKCHAIN, git: false })
       outputDir = path.join(outputDir, EXPECTED_PACKAGE_NAME)
     })
 
@@ -129,12 +129,12 @@ describe('create-wdk-module', () => {
   })
 
   describe('bridge module', () => {
-    const MODULE_NAME = 'wormhole'
+    const PACKAGE_NAME = 'wormhole'
     const BLOCKCHAIN = 'evm'
     const EXPECTED_PACKAGE_NAME = 'wdk-protocol-bridge-wormhole-evm'
 
     beforeEach(async () => {
-      await createModule({ type: 'bridge', name: MODULE_NAME, blockchain: BLOCKCHAIN, git: false })
+      await createModule({ type: 'bridge', name: PACKAGE_NAME, blockchain: BLOCKCHAIN, git: false })
       outputDir = path.join(outputDir, EXPECTED_PACKAGE_NAME)
     })
 
@@ -149,12 +149,12 @@ describe('create-wdk-module', () => {
   })
 
   describe('lending module', () => {
-    const MODULE_NAME = 'compound'
+    const PACKAGE_NAME = 'compound'
     const BLOCKCHAIN = 'evm'
     const EXPECTED_PACKAGE_NAME = 'wdk-protocol-lending-compound-evm'
 
     beforeEach(async () => {
-      await createModule({ type: 'lending', name: MODULE_NAME, blockchain: BLOCKCHAIN, git: false })
+      await createModule({ type: 'lending', name: PACKAGE_NAME, blockchain: BLOCKCHAIN, git: false })
       outputDir = path.join(outputDir, EXPECTED_PACKAGE_NAME)
     })
 
@@ -169,12 +169,12 @@ describe('create-wdk-module', () => {
   })
 
   describe('fiat module', () => {
-    const MODULE_NAME = 'moonpay'
+    const PACKAGE_NAME = 'moonpay'
     const EXPECTED_PACKAGE_NAME = 'wdk-protocol-fiat-moonpay'
     const EXPECTED_DESCRIPTION = 'Moonpay fiat on/off-ramp integration for WDK'
 
     beforeEach(async () => {
-      await createModule({ type: 'fiat', name: MODULE_NAME, git: false })
+      await createModule({ type: 'fiat', name: PACKAGE_NAME, git: false })
       outputDir = path.join(outputDir, EXPECTED_PACKAGE_NAME)
     })
 
@@ -195,13 +195,13 @@ describe('create-wdk-module', () => {
   })
 
   describe('scoped module', () => {
-    const MODULE_NAME = 'stellar'
+    const PACKAGE_NAME = 'stellar'
     const SCOPE = '@tetherto'
     const EXPECTED_DIR_NAME = 'wdk-wallet-stellar'
     const EXPECTED_PACKAGE_NAME = '@tetherto/wdk-wallet-stellar'
 
     beforeEach(async () => {
-      await createModule({ type: 'wallet', name: MODULE_NAME, scope: SCOPE, git: false })
+      await createModule({ type: 'wallet', name: PACKAGE_NAME, scope: SCOPE, git: false })
       outputDir = path.join(outputDir, EXPECTED_DIR_NAME)
     })
 
