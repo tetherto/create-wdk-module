@@ -62,7 +62,7 @@ export default class WalletManager{{pascalCase NAME}} extends WalletManager {
    */
   async getAccountByPath (path) {
     if (!this._accounts[path]) {
-      const account = new WalletAccount{{pascalCase NAME}}(this.seed, path, this._config)
+      const account = await WalletAccount{{pascalCase NAME}}.at(this.seed, path, this._config)
 
       this._accounts[path] = account
     }

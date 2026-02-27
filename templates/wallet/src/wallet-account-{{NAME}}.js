@@ -34,9 +34,10 @@ const BIP_44_DERIVATION_PATH_PREFIX = "m/44'/0'"
 
 /** @implements {IWalletAccount} */
 export default class WalletAccount{{pascalCase NAME}} extends WalletAccountReadOnly{{pascalCase NAME}} {
-/**
+  /**
    * Creates a new {{NAME}} wallet account.
    *
+   * @private
    * @param {string | Uint8Array} seed - The wallet's [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) seed.
    * @param {string} path - The BIP-44 derivation path (e.g. "0'/0/0").
    * @param { {{~pascalCase NAME~}}WalletConfig} [config] - The configuration object.
@@ -51,6 +52,20 @@ export default class WalletAccount{{pascalCase NAME}} extends WalletAccountReadO
      * @type { {{~pascalCase NAME~}}WalletConfig}
      */
     this._config = config
+  }
+
+  /**
+   * Creates a new {{NAME}} wallet account.
+   *
+   * @param {string | Uint8Array} seed - The wallet's [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) seed.
+   * @param {string} path - The BIP-44 derivation path (e.g. "0'/0/0").
+   * @param { {{~pascalCase NAME~}}WalletConfig} [config] - The configuration object.
+   * @returns {Promise<WalletAccount{{pascalCase NAME}}>} The wallet account.
+   */
+  static async at (seed, path, config = {}) {
+    const account = new WalletAccount{{pascalCase NAME}}(seed, path, config)
+
+    return account
   }
 
   /**
