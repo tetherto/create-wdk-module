@@ -43,7 +43,11 @@ export default class WalletAccount{{pascalCase NAME}} extends WalletAccountReadO
    * @param { {{~pascalCase NAME~}}WalletConfig} [config] - The configuration object.
    */
   constructor (seed, path, config = {}) {
-    super(undefined, config)
+    // TODO: Derive the account's address and pass it to the super constructor.
+    //       If the address derivation requires async operations, use undefined
+    //       instead and then override the 'getAddress(): Promise<string>' method
+    //       to derive and return it.
+    super(address, config)
 
     /**
      * The wallet account configuration.
@@ -93,15 +97,6 @@ export default class WalletAccount{{pascalCase NAME}} extends WalletAccountReadO
    */
   get keyPair () {
     // TODO: Return the proper key pair for the account
-  }
-
-  /**
-   * The address of this account.
-   *
-   * @returns {Promise<string>} The address.
-   */
-  async getAddress () {
-    // TODO: Implement blockchain-specific address derivation
   }
 
   /**
