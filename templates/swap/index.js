@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/** @typedef {import('@tetherto/wdk-wallet/protocols').SwapProtocolConfig} SwapProtocolConfig */
-
 /** @typedef {import('@tetherto/wdk-wallet/protocols').SwapOptions} SwapOptions */
 
 /** @typedef {import('@tetherto/wdk-wallet/protocols').SwapResult} SwapResult */
+
+/** @typedef {import('./src/{{NAME}}-protocol-{{BLOCKCHAIN}}.js').{{pascalCase NAME}}ProtocolConfig} {{pascalCase NAME}}ProtocolConfig */
 
 export { default } from './src/{{NAME}}-protocol-{{BLOCKCHAIN}}.js'

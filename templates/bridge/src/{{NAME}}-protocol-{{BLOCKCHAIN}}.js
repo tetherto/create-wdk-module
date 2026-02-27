@@ -19,9 +19,13 @@ import { BridgeProtocol } from '@tetherto/wdk-wallet/protocols'
 /** @typedef {import('@tetherto/wdk-wallet').IWalletAccount} IWalletAccount */
 /** @typedef {import('@tetherto/wdk-wallet').IWalletAccountReadOnly} IWalletAccountReadOnly */
 
-/** @typedef {import('@tetherto/wdk-wallet/protocols').BridgeProtocolConfig} BridgeProtocolConfig */
 /** @typedef {import('@tetherto/wdk-wallet/protocols').BridgeOptions} BridgeOptions */
 /** @typedef {import('@tetherto/wdk-wallet/protocols').BridgeResult} BridgeResult */
+
+/**
+ * @typedef {Object} {{pascalCase NAME}}ProtocolConfig
+ * @property {number | bigint} [bridgeMaxFee] - The maximum fee amount for bridge operations.
+ */
 
 export default class {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}} extends BridgeProtocol {
   /**
@@ -29,7 +33,7 @@ export default class {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}} extend
    *
    * @overload
    * @param {IWalletAccountReadOnly} account - The wallet account to use to interact with the protocol.
-   * @param {BridgeProtocolConfig} [config] - The bridge protocol configuration.
+   * @param { {{~pascalCase NAME~}}ProtocolConfig} [config] - The {{NAME}} protocol configuration.
    */
 
   /**
@@ -37,10 +41,18 @@ export default class {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}} extend
    *
    * @overload
    * @param {IWalletAccount} account - The wallet account to use to interact with the protocol.
-   * @param {BridgeProtocolConfig} [config] - The bridge protocol configuration.
+   * @param { {{~pascalCase NAME~}}ProtocolConfig} [config] - The {{NAME}} protocol configuration.
    */
   constructor (account, config = {}) {
     super(account, config)
+
+    /**
+     * The {{NAME}} protocol configuration.
+     *
+     * @protected
+     * @type { {{~pascalCase NAME~}}ProtocolConfig}
+     */
+    this._config = config
   }
 
   /**

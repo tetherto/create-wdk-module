@@ -4,17 +4,24 @@ export default class {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}} extend
      *
      * @overload
      * @param {IWalletAccountReadOnly} account - The wallet account to use to interact with the protocol.
-     * @param {BridgeProtocolConfig} [config] - The bridge protocol configuration.
+     * @param { {{~pascalCase NAME~}}ProtocolConfig} [config] - The {{NAME}} protocol configuration.
      */
-    constructor(account: IWalletAccountReadOnly, config?: BridgeProtocolConfig);
+    constructor(account: IWalletAccountReadOnly, config?: {{pascalCase NAME}}ProtocolConfig);
     /**
      * Creates a new interface to the {{NAME}} protocol for the {{BLOCKCHAIN}} blockchain.
      *
      * @overload
      * @param {IWalletAccount} account - The wallet account to use to interact with the protocol.
-     * @param {BridgeProtocolConfig} [config] - The bridge protocol configuration.
+     * @param { {{~pascalCase NAME~}}ProtocolConfig} [config] - The {{NAME}} protocol configuration.
      */
-    constructor(account: IWalletAccount, config?: BridgeProtocolConfig);
+    constructor(account: IWalletAccount, config?: {{pascalCase NAME}}ProtocolConfig);
+    /**
+     * The {{NAME}} protocol configuration.
+     *
+     * @protected
+     * @type { {{~pascalCase NAME~}}ProtocolConfig}
+     */
+    protected _config: {{pascalCase NAME}}ProtocolConfig;
     /**
      * Bridges a token to a different blockchain.
      *
@@ -32,7 +39,12 @@ export default class {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}} extend
 }
 export type IWalletAccount = import("@tetherto/wdk-wallet").IWalletAccount;
 export type IWalletAccountReadOnly = import("@tetherto/wdk-wallet").IWalletAccountReadOnly;
-export type BridgeProtocolConfig = import("@tetherto/wdk-wallet/protocols").BridgeProtocolConfig;
 export type BridgeOptions = import("@tetherto/wdk-wallet/protocols").BridgeOptions;
 export type BridgeResult = import("@tetherto/wdk-wallet/protocols").BridgeResult;
+export type {{pascalCase NAME}}ProtocolConfig = {
+    /**
+     * - The maximum fee amount for bridge operations.
+     */
+    bridgeMaxFee?: number | bigint;
+};
 import { BridgeProtocol } from '@tetherto/wdk-wallet/protocols';
