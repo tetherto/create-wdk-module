@@ -11,20 +11,18 @@ npm install {{PACKAGE_NAME}}
 ## Usage
 
 ```javascript
-import {{pascalCase NAME}}Provider from '{{PACKAGE_NAME}}'
-import WalletManager from '@tetherto/wdk-wallet-{{BLOCKCHAIN}}'
+import {{pascalCase NAME}}Protocol from '{{PACKAGE_NAME}}'
+import WalletManager{{pascalCase BLOCKCHAIN}} from '@tetherto/wdk-wallet-{{BLOCKCHAIN}}'
 
 // Create wallet and get account
-const wallet = new WalletManager('your mnemonic...')
+const wallet = new WalletManager{{pascalCase BLOCKCHAIN}}('your mnemonic...')
 const account = await wallet.getAccount()
 
-// Create bridge provider
-const bridgeProvider = new {{pascalCase NAME}}Provider(account, {
-  apiKey: 'your-api-key'
-})
+// Create bridge protocol
+const bridgeProtocol = new {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}}(account)
 
 // Get a quote
-const quote = await bridgeProvider.quoteBridge({
+const quote = await bridgeProtocol.quoteBridge({
   targetChain: 'arbitrum',
   recipient: '0x...',
   token: 'USDT_ADDRESS',
@@ -34,7 +32,7 @@ const quote = await bridgeProvider.quoteBridge({
 console.log('Quote:', quote)
 
 // Execute bridge
-const result = await bridgeProvider.bridge({
+const result = await bridgeProtocol.bridge({
   targetChain: 'arbitrum',
   recipient: '0x...',
   token: 'USDT_ADDRESS',
@@ -46,19 +44,17 @@ console.log('Bridge result:', result)
 
 ## API Reference
 
-### {{pascalCase NAME}}Provider
+### {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}}
 
 #### Constructor
 
 ```javascript
-new {{pascalCase NAME}}Provider(account, config?)
+new {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}}(account, config?)
 ```
 
 - `account` - Wallet account (full or read-only)
 - `config` - Optional configuration
   - `bridgeMaxFee` - Maximum allowed bridge fee
-  - `apiKey` - {{pascalCase NAME}} API key
-  - `apiUrl` - Custom API endpoint
 
 #### Methods
 

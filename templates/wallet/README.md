@@ -47,7 +47,6 @@ new WalletManager{{pascalCase NAME}}(seed, config?)
 
 - `seed` - BIP-39 mnemonic phrase or seed bytes
 - `config` - Optional configuration object
-  - `rpcUrl` - RPC endpoint URL
   - `transferMaxFee` - Maximum allowed transaction fee
 
 #### Methods

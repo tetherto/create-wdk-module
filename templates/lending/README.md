@@ -11,38 +11,36 @@ npm install {{PACKAGE_NAME}}
 ## Usage
 
 ```javascript
-import {{pascalCase NAME}}Provider from '{{PACKAGE_NAME}}'
-import WalletManager from '@tetherto/wdk-wallet-{{BLOCKCHAIN}}'
+import {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}} from '{{PACKAGE_NAME}}'
+import WalletManager{{pascalCase BLOCKCHAIN}} from '@tetherto/wdk-wallet-{{BLOCKCHAIN}}'
 
 // Create wallet and get account
-const wallet = new WalletManager('your mnemonic...')
+const wallet = new WalletManager{{pascalCase BLOCKCHAIN}}('your mnemonic...')
 const account = await wallet.getAccount()
 
-// Create lending provider
-const lendingProvider = new {{pascalCase NAME}}Provider(account, {
-  poolAddress: 'POOL_CONTRACT_ADDRESS'
-})
+// Create lending protocol
+const lendingProtocol = new {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}}(account)
 
 // Supply tokens
-const supplyResult = await lendingProvider.supply({
+const supplyResult = await lendingProtocol.supply({
   token: 'USDT_ADDRESS',
   amount: 1000000n
 })
 
 // Borrow tokens
-const borrowResult = await lendingProvider.borrow({
+const borrowResult = await lendingProtocol.borrow({
   token: 'USDC_ADDRESS',
   amount: 500000n
 })
 
 // Repay borrowed tokens
-const repayResult = await lendingProvider.repay({
+const repayResult = await lendingProtocol.repay({
   token: 'USDC_ADDRESS',
   amount: 500000n
 })
 
 // Withdraw supplied tokens
-const withdrawResult = await lendingProvider.withdraw({
+const withdrawResult = await lendingProtocol.withdraw({
   token: 'USDT_ADDRESS',
   amount: 1000000n
 })
@@ -50,17 +48,15 @@ const withdrawResult = await lendingProvider.withdraw({
 
 ## API Reference
 
-### {{pascalCase NAME}}Provider
+### {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}}
 
 #### Constructor
 
 ```javascript
-new {{pascalCase NAME}}Provider(account, config?)
+new {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}}(account, config?)
 ```
 
 - `account` - Wallet account (full or read-only)
-- `config` - Optional configuration
-  - `poolAddress` - Lending pool contract address
 
 #### Methods
 

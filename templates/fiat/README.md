@@ -11,20 +11,20 @@ npm install {{PACKAGE_NAME}}
 ## Usage
 
 ```javascript
-import {{pascalCase NAME}}Provider from '{{PACKAGE_NAME}}'
+import {{pascalCase NAME}}Protocol from '{{PACKAGE_NAME}}'
 
 // Create fiat provider (account is optional for quotes)
-const fiatProvider = new {{pascalCase NAME}}Provider(undefined, {
+const fiatProtocol = new {{pascalCase NAME}}Protocol(undefined, {
   apiKey: 'your-api-key'
 })
 
 // Get supported assets
-const cryptoAssets = await fiatProvider.getSupportedCryptoAssets()
-const fiatCurrencies = await fiatProvider.getSupportedFiatCurrencies()
-const countries = await fiatProvider.getSupportedCountries()
+const cryptoAssets = await fiatProtocol.getSupportedCryptoAssets()
+const fiatCurrencies = await fiatProtocol.getSupportedFiatCurrencies()
+const countries = await fiatProtocol.getSupportedCountries()
 
 // Get a buy quote
-const buyQuote = await fiatProvider.quoteBuy({
+const buyQuote = await fiatProtocol.quoteBuy({
   cryptoAsset: 'btc',
   fiatCurrency: 'USD',
   fiatAmount: 10000n // $100.00 in cents
@@ -33,7 +33,7 @@ const buyQuote = await fiatProvider.quoteBuy({
 console.log('Buy quote:', buyQuote)
 
 // Generate buy URL (with wallet account for recipient address)
-const buyResult = await fiatProvider.buy({
+const buyResult = await fiatProtocol.buy({
   cryptoAsset: 'btc',
   fiatCurrency: 'USD',
   fiatAmount: 10000n,
@@ -45,19 +45,15 @@ console.log('Buy URL:', buyResult.buyUrl)
 
 ## API Reference
 
-### {{pascalCase NAME}}Provider
+### {{pascalCase NAME}}Protocol
 
 #### Constructor
 
 ```javascript
-new {{pascalCase NAME}}Provider(account?, config)
+new {{pascalCase NAME}}Protocol(account?)
 ```
 
 - `account` - Wallet account (optional, used for default recipient/refund addresses)
-- `config` - Configuration (required)
-  - `apiKey` - {{pascalCase NAME}} API key (required)
-  - `apiUrl` - Custom API endpoint
-  - `sandbox` - Use test mode
 
 #### Methods
 
