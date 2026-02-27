@@ -1,15 +1,3 @@
-/** @typedef {import('@tetherto/wdk-wallet').TransactionResult} TransactionResult */
-/** @typedef {import('@tetherto/wdk-wallet').TransferOptions} TransferOptions */
-/** @typedef {import('@tetherto/wdk-wallet').TransferResult} TransferResult */
-/**
- * @typedef {Object} {{pascalCase NAME}}Transaction
- * @property {string} to - The transaction's recipient.
- * @property {number | bigint} value - The amount of native coins to send to the recipient (in base units).
- */
-/**
- * @typedef {Object} {{pascalCase NAME}}WalletConfig
- * @property {number | bigint} [transferMaxFee] - The maximum fee amount for transfer operations.
- */
 export default class WalletAccountReadOnly{{pascalCase NAME}} extends WalletAccountReadOnly {
     /**
      * Creates a new {{NAME}} read-only wallet account.
