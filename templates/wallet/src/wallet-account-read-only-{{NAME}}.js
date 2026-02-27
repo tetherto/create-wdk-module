@@ -36,7 +36,7 @@ export default class WalletAccountReadOnly{{pascalCase NAME}} extends WalletAcco
    * Creates a new {{NAME}} read-only wallet account.
    *
    * @param {string} [address] - The account's address.
-   * @param {{{pascalCase NAME}}WalletConfig} [config] - The configuration object.
+   * @param { {{~pascalCase NAME~}}WalletConfig} [config] - The configuration object.
    */
   constructor (address, config = {}) {
     super(address)
@@ -83,7 +83,7 @@ export default class WalletAccountReadOnly{{pascalCase NAME}} extends WalletAcco
   /**
    * Quotes the costs of a send transaction operation.
    *
-   * @param {{{pascalCase NAME}}Transaction} tx - The transaction.
+   * @param { {{~pascalCase NAME~}}Transaction} tx - The transaction.
    * @returns {Promise<Omit<TransactionResult, 'hash'>>} The transaction's quotes.
    */
   async quoteSendTransaction (tx) {

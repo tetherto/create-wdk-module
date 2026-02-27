@@ -27,7 +27,7 @@ export default class WalletManager{{pascalCase NAME}} extends WalletManager {
    * Creates a new wallet manager for the {{NAME}} blockchain.
    *
    * @param {string | Uint8Array} seed - The wallet's [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) seed.
-   * @param {{{pascalCase NAME}}WalletConfig} [config] - The configuration object.
+   * @param { {{~pascalCase NAME~}}WalletConfig} [config] - The configuration object.
    */
   constructor (seed, config = {}) {
     super(seed, config)
@@ -36,7 +36,7 @@ export default class WalletManager{{pascalCase NAME}} extends WalletManager {
      * The {{NAME}} wallet configuration.
      *
      * @protected
-     * @type {{{pascalCase NAME}}WalletConfig}
+     * @type { {{~pascalCase NAME~}}WalletConfig}
      */
     this._config = config
   }

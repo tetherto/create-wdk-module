@@ -5,7 +5,7 @@ import { WalletAccount{{pascalCase NAME}}, WalletAccountReadOnly{{pascalCase NAM
 const SEED_PHRASE = 'test only example nut use this real life secret phrase must random'
 
 describe('WalletAccount{{pascalCase NAME}}', () => {
-  let account,
+  let account
 
   beforeEach(() => {
     account = new WalletAccount{{pascalCase NAME}}(SEED_PHRASE, "0'/0/0")

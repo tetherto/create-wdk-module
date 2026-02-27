@@ -213,7 +213,6 @@ export async function createWdkModule (options) {
   console.log(pc.dim(`  ${getInstallCommand(context.PACKAGE_MANAGER)}`))
   console.log(pc.dim('  npm test'))
   console.log()
-  console.log(pc.dim('Base interfaces: https://github.com/tetherto/wdk-wallet'))
   console.log(pc.dim('Documentation: https://docs.wallet.tether.io/sdk/wallet-modules'))
   console.log()
 }

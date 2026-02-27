@@ -95,9 +95,11 @@ export async function compileTemplate ({ templateDir, targetDir, context }) {
   const filenames = await getAllFilenames(templateDir)
 
   for (const filename of filenames) {
-    const fullPath = path.relative(targetDir, filename)
+    const relativePath = path.relative(templateDir, filename)
 
-    const compiledFullPath = compile(fullPath, context)
+    const compiledRelativePath = compile(relativePath, context)
+    const compiledFullPath = path.join(targetDir, compiledRelativePath)
+    await fs.ensureDir(path.dirname(compiledFullPath))
 
     const file = await fs.readFile(filename, 'utf-8')
     const compiledFile = compile(file, context)

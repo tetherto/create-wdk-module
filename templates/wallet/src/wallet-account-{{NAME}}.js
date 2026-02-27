@@ -39,7 +39,7 @@ export default class WalletAccount{{pascalCase NAME}} extends WalletAccountReadO
    *
    * @param {string | Uint8Array} seed - The wallet's [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) seed.
    * @param {string} path - The BIP-44 derivation path (e.g. "0'/0/0").
-   * @param {{{pascalCase NAME}}WalletConfig} [config] - The configuration object.
+   * @param { {{~pascalCase NAME~}}WalletConfig} [config] - The configuration object.
    */
   constructor (seed, path, config = {}) {
     super(undefined, config)
@@ -48,7 +48,7 @@ export default class WalletAccount{{pascalCase NAME}} extends WalletAccountReadO
      * The wallet account configuration.
      *
      * @protected
-     * @type {{{pascalCase NAME}}WalletConfig}
+     * @type { {{~pascalCase NAME~}}WalletConfig}
      */
     this._config = config
   }
@@ -102,7 +102,7 @@ export default class WalletAccount{{pascalCase NAME}} extends WalletAccountReadO
   /**
    * Sends a transaction.
    *
-   * @param {{{pascalCase NAME}}Transaction} tx - The transaction.
+   * @param { {{~pascalCase NAME~}}Transaction} tx - The transaction.
    * @returns {Promise<TransactionResult>} The transaction's result.
    */
   async sendTransaction (tx) {
