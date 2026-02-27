@@ -20,11 +20,11 @@ import pc from 'picocolors'
 
 import { Command } from 'commander'
 
-import { runPrompts } from './run-prompts.js'
-import { createWdkModule } from './create-wdk-module.js'
-import { validateModuleType, validateModuleName, validateScope } from './utilities/validation.js'
+import { runPrompts } from './src/run-prompts.js'
+import { createWdkModule } from './src/create-wdk-module.js'
+import { validateModuleType, validateModuleName, validateScope } from './src/utilities/validation.js'
 
-import { CancelError } from './errors.js'
+import { CancelError } from './src/errors.js'
 
 const program = new Command()
 
