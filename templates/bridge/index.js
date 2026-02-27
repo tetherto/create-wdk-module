@@ -12,4 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { default } from './src/{{CLASS_NAME_LOWER}}-provider.js'
+/** @typedef {import('@tetherto/wdk-wallet/protocols').BridgeProtocolConfig} BridgeProtocolConfig */
+
+/** @typedef {import('@tetherto/wdk-wallet/protocols').BridgeOptions} BridgeOptions */
+
+/** @typedef {import('@tetherto/wdk-wallet/protocols').BridgeResult} BridgeResult */
+
+export { default } from './src/{{NAME}}-protocol-{{BLOCKCHAIN}}.js'

@@ -171,7 +171,8 @@ export async function createWdkModule (options) {
     BLOCKCHAIN: blockchain,
     DESCRIPTION: generateDescription(type, { name, blockchain }),
     YEAR: new Date().getFullYear().toString(),
-    AUTHOR: getGitAuthor()
+    AUTHOR: getGitAuthor(),
+    PACKAGE_MANAGER: detectPackageManager()
   }
 
   console.log(pc.dim(`Creating ${pc.bold(packageName)}...\n`))
@@ -209,7 +210,7 @@ export async function createWdkModule (options) {
   console.log()
   console.log('Next steps:')
   console.log(pc.dim(`  cd ${moduleName}`))
-  console.log(pc.dim(`  ${getInstallCommand(detectPackageManager())}`))
+  console.log(pc.dim(`  ${getInstallCommand(context.PACKAGE_MANAGER)}`))
   console.log(pc.dim('  npm test'))
   console.log()
   console.log(pc.dim('Base interfaces: https://github.com/tetherto/wdk-wallet'))

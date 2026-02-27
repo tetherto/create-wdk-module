@@ -71,8 +71,8 @@ describe('create-wdk-module', () => {
       const walletManager = await readGeneratedFile('src/wallet-manager-stellar.js')
 
       expect(walletManager).toContain('WalletAccountStellar')
-      expect(walletManager).not.toContain('{{CLASS_NAME}}')
-      expect(walletManager).not.toContain('{{CLASS_NAME_LOWER}}')
+      expect(walletManager).not.toContain('{{pascalCase NAME}}')
+      expect(walletManager).not.toContain('{{NAME}}')
     })
 
     test('should include the copyright header with the current year in source files', async () => {
@@ -124,7 +124,7 @@ describe('create-wdk-module', () => {
       const provider = await readGeneratedFile('src/jupiter-provider.js')
 
       expect(provider).toContain('class JupiterProvider')
-      expect(provider).not.toContain('{{CLASS_NAME}}')
+      expect(provider).not.toContain('{{pascalCase NAME}}')
     })
   })
 
@@ -190,7 +190,7 @@ describe('create-wdk-module', () => {
       const provider = await readGeneratedFile('src/moonpay-provider.js')
 
       expect(provider).toContain('class MoonpayProvider')
-      expect(provider).not.toContain('{{CLASS_NAME}}')
+      expect(provider).not.toContain('{{pascalCase NAME}}')
     })
   })
 

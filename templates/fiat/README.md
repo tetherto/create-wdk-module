@@ -11,10 +11,10 @@ npm install {{PACKAGE_NAME}}
 ## Usage
 
 ```javascript
-import {{CLASS_NAME}}Provider from '{{PACKAGE_NAME}}'
+import {{pascalCase NAME}}Provider from '{{PACKAGE_NAME}}'
 
 // Create fiat provider (account is optional for quotes)
-const fiatProvider = new {{CLASS_NAME}}Provider(undefined, {
+const fiatProvider = new {{pascalCase NAME}}Provider(undefined, {
   apiKey: 'your-api-key'
 })
 
@@ -45,17 +45,17 @@ console.log('Buy URL:', buyResult.buyUrl)
 
 ## API Reference
 
-### {{CLASS_NAME}}Provider
+### {{pascalCase NAME}}Provider
 
 #### Constructor
 
 ```javascript
-new {{CLASS_NAME}}Provider(account?, config)
+new {{pascalCase NAME}}Provider(account?, config)
 ```
 
 - `account` - Wallet account (optional, used for default recipient/refund addresses)
 - `config` - Configuration (required)
-  - `apiKey` - {{CLASS_NAME}} API key (required)
+  - `apiKey` - {{pascalCase NAME}} API key (required)
   - `apiUrl` - Custom API endpoint
   - `sandbox` - Use test mode
 

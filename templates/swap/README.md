@@ -11,7 +11,7 @@ npm install {{PACKAGE_NAME}}
 ## Usage
 
 ```javascript
-import {{CLASS_NAME}}Provider from '{{PACKAGE_NAME}}'
+import {{pascalCase NAME}}Provider from '{{PACKAGE_NAME}}'
 import WalletManager from '@tetherto/wdk-wallet-{{BLOCKCHAIN}}'
 
 // Create wallet and get account
@@ -19,7 +19,7 @@ const wallet = new WalletManager('your mnemonic...')
 const account = await wallet.getAccount()
 
 // Create swap provider
-const swapProvider = new {{CLASS_NAME}}Provider(account, {
+const swapProvider = new {{pascalCase NAME}}Provider(account, {
   apiKey: 'your-api-key'
 })
 
@@ -44,18 +44,18 @@ console.log('Swap result:', result)
 
 ## API Reference
 
-### {{CLASS_NAME}}Provider
+### {{pascalCase NAME}}Provider
 
 #### Constructor
 
 ```javascript
-new {{CLASS_NAME}}Provider(account, config?)
+new {{pascalCase NAME}}Provider(account, config?)
 ```
 
 - `account` - Wallet account (full or read-only)
 - `config` - Optional configuration
   - `swapMaxFee` - Maximum allowed swap fee
-  - `apiKey` - {{CLASS_NAME}} API key
+  - `apiKey` - {{pascalCase NAME}} API key
   - `apiUrl` - Custom API endpoint
 
 #### Methods

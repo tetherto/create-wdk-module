@@ -12,5 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'bare-node-runtime'
-export * from './index.js'
+'use strict'
+
+import 'bare-node-runtime/global'
+
+export * from './index.js' with { imports: 'bare-node-runtime/imports' }
+
+export { default } from './index.js' with { imports: 'bare-node-runtime/imports' }

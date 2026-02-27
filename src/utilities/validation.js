@@ -60,7 +60,7 @@ export function validateModuleName (name) {
   }
 
   if (!MODULE_NAME_PATTERN.test(name)) {
-    errors.push('Module names must start with a letter and contain only lowercase letters, numbers, and hyphens.')
+    errors.push('Module names must start with a letter and contain only lowercase letters, numbers, and hyphens')
   }
 
   if (name.length > 50) {

@@ -37,7 +37,7 @@ describe('copyTemplate', () => {
 
   test('should replace placeholders in file content when copying text files', async () => {
     mockFs.readdir.mockResolvedValue([createDirent('index.js', false)])
-    mockFs.readFile.mockResolvedValue('module: {{PACKAGE_NAME}}, class: {{CLASS_NAME}}')
+    mockFs.readFile.mockResolvedValue('module: {{PACKAGE_NAME}}, class: {{pascalCase NAME}}')
 
     await copyTemplate(TEMPLATE_DIR, TARGET_DIR, TEMPLATE_CONTEXT)
 
@@ -48,7 +48,7 @@ describe('copyTemplate', () => {
   })
 
   test('should replace placeholders in file paths', async () => {
-    mockFs.readdir.mockResolvedValue([createDirent('{{CLASS_NAME_LOWER}}-provider.js', false)])
+    mockFs.readdir.mockResolvedValue([createDirent('{{NAME}}-provider.js', false)])
     mockFs.readFile.mockResolvedValue('')
 
     await copyTemplate(TEMPLATE_DIR, TARGET_DIR, TEMPLATE_CONTEXT)
@@ -93,7 +93,7 @@ describe('copyTemplate', () => {
 
   test('should preserve unmatched placeholders in content', async () => {
     mockFs.readdir.mockResolvedValue([createDirent('file.txt', false)])
-    mockFs.readFile.mockResolvedValue('{{UNKNOWN_KEY}} and {{CLASS_NAME}}')
+    mockFs.readFile.mockResolvedValue('{{UNKNOWN_KEY}} and {{pascalCase NAME}}')
 
     await copyTemplate(TEMPLATE_DIR, TARGET_DIR, TEMPLATE_CONTEXT)
 

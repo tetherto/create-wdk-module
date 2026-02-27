@@ -35,10 +35,11 @@ program
   .argument('[type]', 'Module type (wallet/swap/bridge/lending/fiat)')
   .argument('[name]', 'Module name')
   .argument('[blockchain]', 'Target blockchain (for protocol modules)')
-  .option('-s, --scope <scope>', 'npm scope (e.g., @myorg)')
-  .option('--git', 'Initialize git repository', true)
-  .option('--no-git', 'Skip git initialization')
-  .action(async (type, name, blockchain, { scope, git }) => {
+  .option('-s, --scope <SCOPE>', 'npm scope (e.g., @myorg)')
+  .option('--git', 'Initialize git repository', undefined)
+  .option('--no-git', 'Skip initialization of git repository')
+  .option('-y, --yes', 'Skip optional prompts and use defaults', false)
+  .action(async (type, name, blockchain, { scope, git, yes }) => {
     if (type && !validateModuleType(type)) {
       console.error(pc.red(`Invalid module type: ${type}`))
       console.error(pc.dim('Valid types: wallet, swap, bridge, lending, fiat'))
@@ -54,7 +55,7 @@ program
         process.exit(1)
       }
     }
-    
+
     if (blockchain) {
       const { valid, errors } = validateModuleName(blockchain)
 
@@ -76,7 +77,7 @@ program
     }
 
     try {
-      const options = await runPrompts({ type, name, blockchain, scope, git })
+      const options = await runPrompts({ type, name, blockchain, scope, git }, yes)
 
       await createWdkModule(options)
     } catch (error) {
@@ -89,5 +90,4 @@ program
       throw error
     }
   })
-
-program.parse()
+  .parse()

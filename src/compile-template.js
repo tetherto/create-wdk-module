@@ -36,6 +36,7 @@ import Handlebars from 'handlebars'
  * @property {string} DESCRIPTION - The module description.
  * @property {string} YEAR - The current year.
  * @property {string} AUTHOR - The author.
+ * @property {'npm' | 'yarn' | 'pnpm'} PACKAGE_MANAGER - The package manager in use.
  */
 
 Handlebars.registerHelper("pascalCase", function (str) {

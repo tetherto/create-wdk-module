@@ -12,6 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { default } from './src/wallet-manager-{{CLASS_NAME_LOWER}}.js'
-export { default as WalletAccountReadOnly{{CLASS_NAME}} } from './src/wallet-account-read-only-{{CLASS_NAME_LOWER}}.js'
-export { default as WalletAccount{{CLASS_NAME}} } from './src/wallet-account-{{CLASS_NAME_LOWER}}.js'
+'use strict'
+
+/** @typedef {import('@tetherto/wdk-wallet').FeeRates} FeeRates */
+/** @typedef {import('@tetherto/wdk-wallet').KeyPair} KeyPair */
+/** @typedef {import('@tetherto/wdk-wallet').TransactionResult} TransactionResult */
+/** @typedef {import('@tetherto/wdk-wallet').TransferOptions} TransferOptions */
+/** @typedef {import('@tetherto/wdk-wallet').TransferResult} TransferResult */
+
+/** @typedef {import('./src/wallet-account-read-only-{{NAME}}.js').{{pascalCase NAME}}Transaction} {{pascalCase NAME}}Transaction */
+/** @typedef {import('./src/wallet-account-read-only-{{NAME}}.js').{{pascalCase NAME}}WalletConfig} {{pascalCase NAME}}WalletConfig */
+
+export { default } from './src/wallet-manager-{{NAME}}.js'
+
+export { default as WalletAccountReadOnly{{pascalCase NAME}} } from './src/wallet-account-read-only-{{NAME}}.js'
+
+export { default as WalletAccount{{pascalCase NAME}} } from './src/wallet-account-{{NAME}}.js'

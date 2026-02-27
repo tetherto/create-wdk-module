@@ -16,23 +16,27 @@
 
 import { WalletAccountReadOnly } from '@tetherto/wdk-wallet'
 
-/** @typedef {import('@tetherto/wdk-wallet').Transaction} Transaction */
 /** @typedef {import('@tetherto/wdk-wallet').TransactionResult} TransactionResult */
 /** @typedef {import('@tetherto/wdk-wallet').TransferOptions} TransferOptions */
 /** @typedef {import('@tetherto/wdk-wallet').TransferResult} TransferResult */
 
-/** @typedef {import('./wallet-manager-{{CLASS_NAME_LOWER}}.js').{{CLASS_NAME}}WalletConfig} {{CLASS_NAME}}WalletConfig */
+/**
+ * @typedef {Object} {{pascalCase NAME}}Transaction
+ * @property {string} to - The transaction's recipient.
+ * @property {number | bigint} value - The amount of native coins to send to the recipient (in base units).
+ */
 
 /**
- * Read-only {{CLASS_NAME}} wallet account implementation.
- * @extends WalletAccountReadOnly
+ * @typedef {Object} {{pascalCase NAME}}WalletConfig
+ * @property {number | bigint} [transferMaxFee] - The maximum fee amount for transfer operations.
  */
-export default class WalletAccountReadOnly{{CLASS_NAME}} extends WalletAccountReadOnly {
+
+export default class WalletAccountReadOnly{{pascalCase NAME}} extends WalletAccountReadOnly {
   /**
-   * Creates a new read-only {{BLOCKCHAIN}} wallet account.
+   * Creates a new {{NAME}} read-only wallet account.
    *
    * @param {string} [address] - The account's address.
-   * @param {{{CLASS_NAME}}WalletConfig} [config] - The configuration object.
+   * @param {{{pascalCase NAME}}WalletConfig} [config] - The configuration object.
    */
   constructor (address, config = {}) {
     super(address)
@@ -41,43 +45,49 @@ export default class WalletAccountReadOnly{{CLASS_NAME}} extends WalletAccountRe
      * The wallet account configuration.
      *
      * @protected
-     * @type {{{CLASS_NAME}}WalletConfig}
+     * @type {Omit<{{pascalCase NAME}}WalletConfig, 'transferMaxFee'>}
      */
     this._config = config
-
-    // TODO: Initialize {{BLOCKCHAIN}}-specific RPC client if config.rpcUrl provided
   }
 
   /**
-   * Returns the account's native token balance.
+   * Verifies a message's signature.
    *
-   * @returns {Promise<bigint>} The native token balance.
+   * @param {string} message - The original message.
+   * @param {string} signature - The signature to verify.
+   * @returns {Promise<boolean>} True if the signature is valid.
+   */
+  async verify (message, signature) {
+    // TODO: Implement blockchain-specific message verifying
+  }
+
+  /**
+   * Returns the account's native coin balance.
+   *
+   * @returns {Promise<bigint>} The native coin balance (in base units).
    */
   async getBalance () {
-    // TODO: Implement {{BLOCKCHAIN}}-specific balance fetching
-    throw new Error('getBalance() is not yet implemented for {{BLOCKCHAIN}}')
+    // TODO: Implement blockchain-specific balance fetching
   }
 
   /**
    * Returns the account balance for a specific token.
    *
    * @param {string} tokenAddress - The smart contract address of the token.
-   * @returns {Promise<bigint>} The token balance.
+   * @returns {Promise<bigint>} The token balance (in base units).
    */
   async getTokenBalance (tokenAddress) {
-    // TODO: Implement {{BLOCKCHAIN}}-specific token balance fetching
-    throw new Error('getTokenBalance() is not yet implemented for {{BLOCKCHAIN}}')
+    // TODO: Implement blockchain-specific token balance fetching
   }
 
   /**
    * Quotes the costs of a send transaction operation.
    *
-   * @param {Transaction} tx - The transaction.
+   * @param {{{pascalCase NAME}}Transaction} tx - The transaction.
    * @returns {Promise<Omit<TransactionResult, 'hash'>>} The transaction's quotes.
    */
   async quoteSendTransaction (tx) {
-    // TODO: Implement {{BLOCKCHAIN}}-specific fee estimation
-    throw new Error('quoteSendTransaction() is not yet implemented for {{BLOCKCHAIN}}')
+    // TODO: Implement blockchain-specific transaction fee estimation
   }
 
   /**
@@ -87,8 +97,7 @@ export default class WalletAccountReadOnly{{CLASS_NAME}} extends WalletAccountRe
    * @returns {Promise<Omit<TransferResult, 'hash'>>} The transfer's quotes.
    */
   async quoteTransfer (options) {
-    // TODO: Implement {{BLOCKCHAIN}}-specific transfer fee estimation
-    throw new Error('quoteTransfer() is not yet implemented for {{BLOCKCHAIN}}')
+    // TODO: Implement blockchain-specific transfer fee estimation
   }
 
   /**
@@ -98,7 +107,6 @@ export default class WalletAccountReadOnly{{CLASS_NAME}} extends WalletAccountRe
    * @returns {Promise<unknown | null>} The receipt, or null if the transaction has not been included in a block yet.
    */
   async getTransactionReceipt (hash) {
-    // TODO: Implement {{BLOCKCHAIN}}-specific transaction receipt fetching
-    throw new Error('getTransactionReceipt() is not yet implemented for {{BLOCKCHAIN}}')
+    // TODO: Implement blockchain-specific transaction receipt fetching
   }
 }

@@ -12,4 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { default } from './src/{{CLASS_NAME_LOWER}}-provider.js'
+/** @typedef {import('@tetherto/wdk-wallet/protocols').BorrowOptions} BorrowOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').BorrowResult} BorrowResult */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').SupplyOptions} SupplyOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').SupplyResult} SupplyResult */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').WithdrawOptions} WithdrawOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').WithdrawResult} WithdrawResult */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').RepayOptions} RepayOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').RepayResult} RepayResult */
+
+export { default } from './src/{{NAME}}-protocol-{{BLOCKCHAIN}}.js'

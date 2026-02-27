@@ -12,4 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { default } from './src/{{CLASS_NAME_LOWER}}-provider.js'
+/** @typedef {import('@tetherto/wdk-wallet/protocols').BuyOptions} BuyOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').BuyCommonOptions} BuyCommonOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').BuyExactCryptoAmountOptions} BuyExactCryptoAmountOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').BuyWithFiatAmountOptions} BuyWithFiatAmountOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').BuyResult} BuyResult */
+
+/** @typedef {import('@tetherto/wdk-wallet/protocols').SellOptions} SellOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').SellCommonOptions} SellCommonOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').SellExactCryptoAmountOptions} SellExactCryptoAmountOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').SellForFiatAmountOptions} SellForFiatAmountOptions */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').SellResult} SellResult */
+
+/** @typedef {import('@tetherto/wdk-wallet/protocols').FiatQuote} FiatQuote */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').FiatTransactionStatus} FiatTransactionStatus */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').FiatTransactionDetail} FiatTransactionDetail */
+
+/** @typedef {import('@tetherto/wdk-wallet/protocols').SupportedCryptoAsset} SupportedCryptoAsset */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').SupportedFiatCurrency} SupportedFiatCurrency */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').SupportedCountry} SupportedCountry */
+
+export { default } from './src/{{NAME}}-protocol.js'

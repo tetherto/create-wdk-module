@@ -26,10 +26,11 @@ import { CancelError } from './errors.js'
  * Runs interactive prompts to collect missing module creation options.
  *
  * @param {Partial<CreateWdkModuleOptions>} options - The partial options from CLI arguments.
+ * @param {boolean} [useDefaults] - If true, uses default values for optional prompts.
  * @returns {Promise<CreateWdkModuleOptions>} The full module options.
  * @throws {CancelError} If the operation is cancelled.
  */
-export async function runPrompts (options) {
+export async function runPrompts (options, useDefaults = false) {
   const questions = []
 
   if (!options.type) {
@@ -75,9 +76,9 @@ export async function runPrompts (options) {
   if (!options.blockchain) {
     questions.push({
       type: (_prev, values) => {
-        const type = options.type || values.type
-        
-        return ['swap', 'bridge', 'lending'].includes(type) ? 'select' : null
+        return ['swap', 'bridge', 'lending'].includes(options.type || values.type)
+          ? 'select'
+          : null
       },
       name: 'blockchain',
       message: 'What blockchain does this target?',
@@ -102,7 +103,7 @@ export async function runPrompts (options) {
     })
   }
 
-  if (!options.scope) {
+  if (options.scope === undefined && !useDefaults) {
     questions.push({
       type: 'text',
       name: 'scope',
@@ -118,7 +119,7 @@ export async function runPrompts (options) {
     })
   }
 
-  if (!options.git) {
+  if (options.git === undefined && !useDefaults) {
     questions.push({
       type: 'confirm',
       name: 'git',
@@ -127,17 +128,17 @@ export async function runPrompts (options) {
     })
   }
 
-  const answers = await prompts(questions, { 
+  const answers = await prompts(questions, {
     onCancel: () => {
       throw new CancelError('The operation has been cancelled.')
     }
   })
 
   return {
-    type: options.type || answers.type,
-    name: options.name || answers.name,
-    blockchain: options.blockchain || answers.blockchainOther || answers.blockchain,
-    scope: options.scope || answers.scope,
-    git: options.git || answers.git
+    type: options.type ?? answers.type,
+    name: options.name ?? answers.name,
+    blockchain: options.blockchain ?? answers.blockchainOther ?? answers.blockchain,
+    scope: options.scope ?? answers.scope,
+    git: options.git ?? answers.git ?? true
   }
 }

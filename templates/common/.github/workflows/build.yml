@@ -1,4 +1,4 @@
-name: Build
+name: build
 
 on:
   push:
@@ -7,17 +7,23 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+      - uses: actions/checkout@v3
+      - name: Set up Node 22.22.0
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: npm run lint
-      - run: npm test
+          node-version: '22.22.0'
+          cache: {{ PACKAGE_MANAGER }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm clean-install
+
+      - name: Lint code with standard
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test

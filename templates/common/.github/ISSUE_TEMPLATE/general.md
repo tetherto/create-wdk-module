@@ -1,35 +1,48 @@
 ---
-name: General Issue
-about: Report a bug, request a feature, or ask a question
-title: ''
-labels: ''
-assignees: ''
+name: "General issue"
+about: "Use this for bugs, features, or docs changes"
+title: ""
+labels: []
+assignees: []
 ---
 
-## Description
+## I'm submitting a...
 
-A clear and concise description of what the issue is about.
+- [ ] bug report
+- [ ] feature request
+- [ ] documentation change
 
-## Expected Behavior
+## What is the expected behaviour?
 
-What you expected to happen.
+<!--- Describe the expected behaviour in details. -->
 
-## Actual Behavior
+## What is the current behaviour?
 
-What actually happened.
+<!--- Describe the current behaviour in details. -->
 
-## Steps to Reproduce
+## Possible solution (optional)
 
-1. Step one
-2. Step two
-3. ...
+<!-- If you have a solution proposal, please explain it here. -->
+<!-- If your solution includes implementation, you should also open a pull request with this as related issue. -->
+<!-- You can delete this section if you don't want to suggest a possible solution. -->
 
-## Environment
+A possible solution could be...
 
-- Node.js version:
-- Package version:
-- Operating System:
+## Steps to reproduce (for bugs)
 
-## Additional Context
+<!-- You can delete this section if you are not submitting a bug report. -->
 
-Add any other context about the problem here.
+1.
+2.
+3.
+
+### Node version
+
+<!-- Indicate your node version here. -->
+<!-- You can print it using `node --version`. -->
+
+Node v22.13.1 x64
+
+### Package version
+
+{{ PACKAGE_NAME }} v1.0.0-beta.1
