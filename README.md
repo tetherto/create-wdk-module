@@ -108,6 +108,12 @@ wdk-wallet-stellar/
 │   └── wallet-manager-stellar.test.js
 │   └── wallet-account-stellar.test.js
 │   └── wallet-account-read-only-stellar.test.js
+├── types/
+│   └── index.d.ts
+│   └── src/
+│       └── wallet-manager-stellar.d.ts
+│       └── wallet-account-stellar.d.ts
+│       └── wallet-account-read-only-stellar.d.ts
 ├── .editorconfig
 ├── .gitignore
 ├── .npmignore
@@ -129,6 +135,10 @@ wdk-protocol-swap-jupiter-solana/
 │   └── jupiter-protocol-solana.js
 ├── tests/
 │   └── jupiter-protocol-solana.test.js
+├── types/
+│   └── index.d.ts
+│   └── src/
+│       └── jupiter-protocol-solana.d.ts
 ├── ...
 ```
 
