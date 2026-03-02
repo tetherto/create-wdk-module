@@ -95,7 +95,7 @@ function generatePackageName ({ type, name, blockchain, scope }) {
  * Generates a human-readable description for the module.
  *
  * @param {ModuleType} type The module type.
- * @param {Pick<CreateWdkModuleOptions, 'name' | 'blockchain'} options - The module options.
+ * @param {Pick<CreateWdkModuleOptions, 'name' | 'blockchain'>} options - The module options.
  * @returns {string} The description.
  */
 function generateDescription (type, { name, blockchain }) {

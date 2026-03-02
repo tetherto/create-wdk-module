@@ -152,11 +152,8 @@ cd create-wdk-module
 # Install dependencies
 npm install
 
-# Build
-npm run build
-
 # Run locally
-node dist/index.js
+npm start
 
 # Run tests
 npm test

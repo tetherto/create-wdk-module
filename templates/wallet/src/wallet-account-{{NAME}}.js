@@ -135,7 +135,7 @@ export default class WalletAccount{{pascalCase NAME}} extends WalletAccountReadO
    * @returns {Promise<WalletAccountReadOnly{{pascalCase NAME}}>} The read-only account.
    */
   async toReadOnlyAccount () {
-    // TODO: Implement convertion to read-only account
+    // TODO: Implement conversion to read-only account
   }
 
   /**

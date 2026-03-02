@@ -14,7 +14,7 @@
   },
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node ./index.js",
     "lint": "standard",
     "lint:fix": "standard --fix",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
