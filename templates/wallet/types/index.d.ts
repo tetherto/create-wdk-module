@@ -1,0 +1,10 @@
+export { default } from "./src/wallet-manager-{{NAME}}.js";
+export { default as WalletAccountReadOnly{{pascalCase NAME}} } from "./src/wallet-account-read-only-{{NAME}}.js";
+export { default as WalletAccount{{pascalCase NAME}} } from "./src/wallet-account-{{NAME}}.js";
+export type FeeRates = import("@tetherto/wdk-wallet").FeeRates;
+export type KeyPair = import("@tetherto/wdk-wallet").KeyPair;
+export type TransactionResult = import("@tetherto/wdk-wallet").TransactionResult;
+export type TransferOptions = import("@tetherto/wdk-wallet").TransferOptions;
+export type TransferResult = import("@tetherto/wdk-wallet").TransferResult;
+export type {{pascalCase NAME}}Transaction = import("./src/wallet-account-read-only-{{NAME}}.js").{{pascalCase NAME}}Transaction;
+export type {{pascalCase NAME}}WalletConfig = import("./src/wallet-account-read-only-{{NAME}}.js").{{pascalCase NAME}}WalletConfig;

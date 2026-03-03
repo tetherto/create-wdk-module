@@ -1,0 +1,51 @@
+{
+  "name": "@tetherto/create-wdk-module",
+  "version": "1.0.0-beta.1",
+  "description": "Create WDK modules with a single command",
+  "keywords": [
+    "wdk",
+    "create"
+  ],
+  "author": "Tether",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tetherto/create-wdk-module.git"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node ./index.js",
+    "lint": "standard",
+    "lint:fix": "standard --fix",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "test:integration": "cross-env NODE_OPTIONS=--experimental-vm-modules jest tests/integration",
+    "test:integration:coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules jest tests/integration --coverage"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "fs-extra": "^11.2.0",
+    "handlebars": "^4.7.8",
+    "ora": "^8.1.1",
+    "picocolors": "^1.1.1",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "standard": "^17.1.2"
+  },
+  "bin": {
+    "create-wdk-module": "./index.js"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "standard": {
+    "ignore": [
+      "templates/**/*.js",
+      "tests/**/*.js"
+    ]
+  }
+}

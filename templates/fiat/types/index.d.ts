@@ -1,0 +1,17 @@
+export { default } from "./src/{{NAME}}-protocol.js";
+export type BuyOptions = import("@tetherto/wdk-wallet/protocols").BuyOptions;
+export type BuyCommonOptions = import("@tetherto/wdk-wallet/protocols").BuyCommonOptions;
+export type BuyExactCryptoAmountOptions = import("@tetherto/wdk-wallet/protocols").BuyExactCryptoAmountOptions;
+export type BuyWithFiatAmountOptions = import("@tetherto/wdk-wallet/protocols").BuyWithFiatAmountOptions;
+export type BuyResult = import("@tetherto/wdk-wallet/protocols").BuyResult;
+export type SellOptions = import("@tetherto/wdk-wallet/protocols").SellOptions;
+export type SellCommonOptions = import("@tetherto/wdk-wallet/protocols").SellCommonOptions;
+export type SellExactCryptoAmountOptions = import("@tetherto/wdk-wallet/protocols").SellExactCryptoAmountOptions;
+export type SellForFiatAmountOptions = import("@tetherto/wdk-wallet/protocols").SellForFiatAmountOptions;
+export type SellResult = import("@tetherto/wdk-wallet/protocols").SellResult;
+export type FiatQuote = import("@tetherto/wdk-wallet/protocols").FiatQuote;
+export type FiatTransactionStatus = import("@tetherto/wdk-wallet/protocols").FiatTransactionStatus;
+export type FiatTransactionDetail = import("@tetherto/wdk-wallet/protocols").FiatTransactionDetail;
+export type SupportedCryptoAsset = import("@tetherto/wdk-wallet/protocols").SupportedCryptoAsset;
+export type SupportedFiatCurrency = import("@tetherto/wdk-wallet/protocols").SupportedFiatCurrency;
+export type SupportedCountry = import("@tetherto/wdk-wallet/protocols").SupportedCountry;
