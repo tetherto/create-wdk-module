@@ -1,20 +1,20 @@
-# {{MODULE_NAME}}
+# {{PACKAGE_NAME}}
 
 {{DESCRIPTION}}
 
 ## Installation
 
 ```bash
-npm install {{MODULE_NAME}}
+npm install {{PACKAGE_NAME}}
 ```
 
 ## Usage
 
 ```javascript
-import WalletManager{{CLASS_NAME}} from '{{MODULE_NAME}}'
+import WalletManager{{pascalCase NAME}} from '{{PACKAGE_NAME}}'
 
 // Create wallet from mnemonic
-const wallet = new WalletManager{{CLASS_NAME}}('your twelve word mnemonic phrase here ...')
+const wallet = new WalletManager{{pascalCase NAME}}('your twelve word mnemonic phrase here ...')
 
 // Get an account
 const account = await wallet.getAccount(0)
@@ -37,17 +37,16 @@ wallet.dispose()
 
 ## API Reference
 
-### WalletManager{{CLASS_NAME}}
+### WalletManager{{pascalCase NAME}}
 
 #### Constructor
 
 ```javascript
-new WalletManager{{CLASS_NAME}}(seed, config?)
+new WalletManager{{pascalCase NAME}}(seed, config?)
 ```
 
 - `seed` - BIP-39 mnemonic phrase or seed bytes
 - `config` - Optional configuration object
-  - `rpcUrl` - RPC endpoint URL
   - `transferMaxFee` - Maximum allowed transaction fee
 
 #### Methods
@@ -57,7 +56,7 @@ new WalletManager{{CLASS_NAME}}(seed, config?)
 - `getFeeRates()` - Get current network fee rates
 - `dispose()` - Clean up and dispose all accounts
 
-### WalletAccount{{CLASS_NAME}}
+### WalletAccount{{pascalCase NAME}}
 
 #### Properties
 

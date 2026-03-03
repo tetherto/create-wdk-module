@@ -74,8 +74,7 @@ $ npx create-wdk-module@latest
 
 Creating wdk-wallet-stellar...
 
-✓ Copied common files
-✓ Copied template files
+✓ Template files copied
 ✓ Initialized git repository
 
 Success! Created wdk-wallet-stellar at ./wdk-wallet-stellar
@@ -86,7 +85,6 @@ Next steps:
   npm test
 
 Documentation: https://docs.wallet.tether.io/sdk/wallet-modules
-Base interfaces: https://github.com/tetherto/wdk-wallet
 ```
 
 ## Generated Project Structure
@@ -98,15 +96,24 @@ wdk-wallet-stellar/
 ├── .github/
 │   └── workflows/
 │       └── build.yml
+│       └── publish.yml
+│   └── ISSUE_TEMPLATE/
+│       └── general.md
+│   └── PULL_REQUEST_TEMPLATE.md
 ├── src/
-│   ├── errors.js
 │   ├── wallet-manager-stellar.js
 │   ├── wallet-account-stellar.js
 │   └── wallet-account-read-only-stellar.js
 ├── tests/
-│   └── *.test.js
+│   └── wallet-manager-stellar.test.js
+│   └── wallet-account-stellar.test.js
+│   └── wallet-account-read-only-stellar.test.js
 ├── types/
 │   └── index.d.ts
+│   └── src/
+│       └── wallet-manager-stellar.d.ts
+│       └── wallet-account-stellar.d.ts
+│       └── wallet-account-read-only-stellar.d.ts
 ├── .editorconfig
 ├── .gitignore
 ├── .npmignore
@@ -125,11 +132,13 @@ Protocol modules (swap, bridge, lending, fiat) follow a similar structure with a
 ```
 wdk-protocol-swap-jupiter-solana/
 ├── src/
-│   └── jupiter-provider.js
+│   └── jupiter-protocol-solana.js
 ├── tests/
-│   └── jupiter-provider.test.js
+│   └── jupiter-protocol-solana.test.js
 ├── types/
 │   └── index.d.ts
+│   └── src/
+│       └── jupiter-protocol-solana.d.ts
 ├── ...
 ```
 
@@ -143,11 +152,8 @@ cd create-wdk-module
 # Install dependencies
 npm install
 
-# Build
-npm run build
-
 # Run locally
-node dist/index.js
+npm start
 
 # Run tests
 npm test

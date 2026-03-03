@@ -1,30 +1,28 @@
-# {{MODULE_NAME}}
+# {{PACKAGE_NAME}}
 
 {{DESCRIPTION}}
 
 ## Installation
 
 ```bash
-npm install {{MODULE_NAME}}
+npm install {{PACKAGE_NAME}}
 ```
 
 ## Usage
 
 ```javascript
-import {{CLASS_NAME}}Provider from '{{MODULE_NAME}}'
-import WalletManager from '@tetherto/wdk-wallet-{{BLOCKCHAIN}}'
+import {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}} from '{{PACKAGE_NAME}}'
+import WalletManager{{pascalCase BLOCKCHAIN}} from '@tetherto/wdk-wallet-{{BLOCKCHAIN}}'
 
 // Create wallet and get account
-const wallet = new WalletManager('your mnemonic...')
+const wallet = new WalletManager{{pascalCase BLOCKCHAIN}}('your mnemonic...')
 const account = await wallet.getAccount()
 
-// Create swap provider
-const swapProvider = new {{CLASS_NAME}}Provider(account, {
-  apiKey: 'your-api-key'
-})
+// Create swap protocol
+const swapProtocol = new {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}}(account)
 
 // Get a quote
-const quote = await swapProvider.quoteSwap({
+const quote = await swapProtocol.quoteSwap({
   tokenIn: 'TOKEN_A_ADDRESS',
   tokenOut: 'TOKEN_B_ADDRESS',
   tokenInAmount: 1000000n // amount in base units
@@ -33,7 +31,7 @@ const quote = await swapProvider.quoteSwap({
 console.log('Quote:', quote)
 
 // Execute swap
-const result = await swapProvider.swap({
+const result = await swapProtocol.swap({
   tokenIn: 'TOKEN_A_ADDRESS',
   tokenOut: 'TOKEN_B_ADDRESS',
   tokenInAmount: 1000000n
@@ -44,19 +42,17 @@ console.log('Swap result:', result)
 
 ## API Reference
 
-### {{CLASS_NAME}}Provider
+### {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}}
 
 #### Constructor
 
 ```javascript
-new {{CLASS_NAME}}Provider(account, config?)
+new {{pascalCase NAME}}Protocol{{pascalCase BLOCKCHAIN}}(account, config?)
 ```
 
 - `account` - Wallet account (full or read-only)
 - `config` - Optional configuration
   - `swapMaxFee` - Maximum allowed swap fee
-  - `apiKey` - {{CLASS_NAME}} API key
-  - `apiUrl` - Custom API endpoint
 
 #### Methods
 

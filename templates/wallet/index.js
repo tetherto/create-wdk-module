@@ -1,3 +1,30 @@
-export { default } from './src/wallet-manager-{{CLASS_NAME_LOWER}}.js'
-export { default as WalletAccountReadOnly{{CLASS_NAME}} } from './src/wallet-account-read-only-{{CLASS_NAME_LOWER}}.js'
-export { default as WalletAccount{{CLASS_NAME}} } from './src/wallet-account-{{CLASS_NAME_LOWER}}.js'
+// Copyright {{YEAR}} {{AUTHOR}}
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+'use strict'
+
+/** @typedef {import('@tetherto/wdk-wallet').FeeRates} FeeRates */
+/** @typedef {import('@tetherto/wdk-wallet').KeyPair} KeyPair */
+/** @typedef {import('@tetherto/wdk-wallet').TransactionResult} TransactionResult */
+/** @typedef {import('@tetherto/wdk-wallet').TransferOptions} TransferOptions */
+/** @typedef {import('@tetherto/wdk-wallet').TransferResult} TransferResult */
+
+/** @typedef {import('./src/wallet-account-read-only-{{NAME}}.js').{{pascalCase NAME}}Transaction} {{pascalCase NAME}}Transaction */
+/** @typedef {import('./src/wallet-account-read-only-{{NAME}}.js').{{pascalCase NAME}}WalletConfig} {{pascalCase NAME}}WalletConfig */
+
+export { default } from './src/wallet-manager-{{NAME}}.js'
+
+export { default as WalletAccountReadOnly{{pascalCase NAME}} } from './src/wallet-account-read-only-{{NAME}}.js'
+
+export { default as WalletAccount{{pascalCase NAME}} } from './src/wallet-account-{{NAME}}.js'

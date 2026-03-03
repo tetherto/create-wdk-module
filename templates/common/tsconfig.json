@@ -1,18 +1,17 @@
 {
+  "include": [
+    "index.js",
+    "src/**/*.js",
+  ],
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2015",
     "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "nodenext",
     "allowJs": true,
-    "checkJs": true,
     "declaration": true,
-    "declarationMap": true,
     "emitDeclarationOnly": true,
-    "outDir": "./types",
-    "strict": true,
     "skipLibCheck": true,
-    "esModuleInterop": true
-  },
-  "include": ["src/**/*.js", "index.js", "bare.js"],
-  "exclude": ["node_modules", "tests"]
+    "stripInternal": true,
+    "outDir": "./types"
+  }
 }
