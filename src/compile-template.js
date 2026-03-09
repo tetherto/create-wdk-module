@@ -83,6 +83,14 @@ function compile (text, context) {
   return template(context)
 }
 
+// Files that npm strips from published packages and need to be stored
+// without the leading dot, then restored during scaffolding.
+const DOTFILE_RENAMES = {
+  gitignore: '.gitignore',
+  npmignore: '.npmignore',
+  npmrc: '.npmrc'
+}
+
 /**
  * Compiles a template directory to the target, replacing placeholders in file names and contents.
  *
@@ -97,7 +105,16 @@ export async function compileTemplate ({ templateDir, targetDir, context }) {
   for (const filename of filenames) {
     const relativePath = path.relative(templateDir, filename)
 
-    const compiledRelativePath = compile(relativePath, context)
+    let compiledRelativePath = compile(relativePath, context)
+
+    const basename = path.basename(compiledRelativePath)
+    if (DOTFILE_RENAMES[basename]) {
+      compiledRelativePath = path.join(
+        path.dirname(compiledRelativePath),
+        DOTFILE_RENAMES[basename]
+      )
+    }
+
     const compiledFullPath = path.join(targetDir, compiledRelativePath)
     await fs.ensureDir(path.dirname(compiledFullPath))
 
