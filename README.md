@@ -7,20 +7,20 @@ https://github.com/user-attachments/assets/e342eeef-1e45-4ac0-bd16-bb5cdd63d501
 ## Quick Start
 
 ```bash
-npx create-wdk-module@latest
+npx @tetherto/create-wdk-module@latest
 ```
 
 Or with specific options:
 
 ```bash
 # Create a wallet module
-npx create-wdk-module@latest wallet stellar
+npx @tetherto/create-wdk-module@latest wallet stellar
 
 # Create a swap protocol module
-npx create-wdk-module@latest swap jupiter solana
+npx @tetherto/create-wdk-module@latest swap jupiter solana
 
 # Create with npm scope
-npx create-wdk-module@latest wallet stellar --scope @myorg
+npx @tetherto/create-wdk-module@latest wallet stellar --scope @myorg
 ```
 
 ## Module Types
@@ -52,7 +52,7 @@ npx create-wdk-module@latest wallet stellar --scope @myorg
 When run without arguments, the CLI guides you through the setup:
 
 ```bash
-$ npx create-wdk-module@latest
+$ npx @tetherto/create-wdk-module@latest
 
   Create WDK Module
 
