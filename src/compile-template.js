@@ -39,13 +39,13 @@ import Handlebars from 'handlebars'
  * @property {'npm' | 'yarn' | 'pnpm'} PACKAGE_MANAGER - The package manager in use.
  */
 
-Handlebars.registerHelper("pascalCase", function (str) {
+Handlebars.registerHelper('pascalCase', function (str) {
   return str
     .replace(/[_-]+/g, ' ')
     .replace(/[^\w\s]/g, '')
     .split(' ')
     .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-    .join('');
+    .join('')
 })
 
 /**

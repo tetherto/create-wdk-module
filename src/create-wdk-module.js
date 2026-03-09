@@ -123,11 +123,9 @@ function detectPackageManager () {
 
   if (!userAgent || userAgent.startsWith('npm')) {
     return 'npm'
-  }
-  else if (userAgent.startsWith('yarn')) {
+  } else if (userAgent.startsWith('yarn')) {
     return 'yarn'
-  }
-  else if (userAgent.startsWith('pnpm')) {
+  } else if (userAgent.startsWith('pnpm')) {
     return 'pnpm'
   }
 }
