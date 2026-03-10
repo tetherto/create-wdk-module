@@ -1,6 +1,6 @@
 {
   "name": "@tetherto/create-wdk-module",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Create WDK modules with a single command",
   "keywords": [
     "wdk",

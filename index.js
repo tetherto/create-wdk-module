@@ -31,7 +31,7 @@ const program = new Command()
 program
   .name('create-wdk-module')
   .description('Create WDK modules with a single command')
-  .version('1.0.0-beta.1')
+  .version('1.0.0-beta.2')
   .argument('[type]', 'Module type (wallet/swap/bridge/lending/fiat)')
   .argument('[name]', 'Module name')
   .argument('[blockchain]', 'Target blockchain (for protocol modules)')
