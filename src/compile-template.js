@@ -39,6 +39,17 @@ import Handlebars from 'handlebars'
  * @property {'npm' | 'yarn' | 'pnpm'} PACKAGE_MANAGER - The package manager in use.
  */
 
+/**
+ * Some additional context for to bypass default npm ignore rules.
+ *
+ * @type {Record<string, string>}
+ */
+const EXTENDED_CONTEXT = {
+  GITIGNORE: '.gitignore',
+  NPMIGNORE: '.npmignore',
+  NPMRC: '.npmrc'
+}
+
 Handlebars.registerHelper('pascalCase', function (str) {
   return str
     .replace(/[_-]+/g, ' ')
@@ -97,7 +108,7 @@ export async function compileTemplate ({ templateDir, targetDir, context }) {
   for (const filename of filenames) {
     const relativePath = path.relative(templateDir, filename)
 
-    const compiledRelativePath = compile(relativePath, context)
+    const compiledRelativePath = compile(relativePath, { ...context, ...EXTENDED_CONTEXT })
     const compiledFullPath = path.join(targetDir, compiledRelativePath)
     await fs.ensureDir(path.dirname(compiledFullPath))
 
