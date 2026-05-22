@@ -23,7 +23,7 @@ const MODULE_NAME_PATTERN = /^[a-z][a-z0-9-.]*$/
  * @returns {boolean} Whether the type is valid.
  */
 export function validateModuleType (type) {
-  return ['wallet', 'swap', 'bridge', 'lending', 'fiat'].includes(type)
+  return ['wallet', 'swap', 'bridge', 'lending', 'fiat', 'swidge'].includes(type)
 }
 
 /**

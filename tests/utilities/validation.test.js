@@ -11,6 +11,7 @@ describe('validateModuleType', () => {
     expect(validateModuleType('bridge')).toBe(true)
     expect(validateModuleType('lending')).toBe(true)
     expect(validateModuleType('fiat')).toBe(true)
+    expect(validateModuleType('swidge')).toBe(true)
   })
 
   test('should return false when given an unknown type', () => {

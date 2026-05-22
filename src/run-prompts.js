@@ -43,7 +43,8 @@ export async function runPrompts (options, useDefaults = false) {
         { title: 'Swap Module', description: 'DEX/token swap integration', value: 'swap' },
         { title: 'Bridge Module', description: 'Cross-chain bridging', value: 'bridge' },
         { title: 'Lending Module', description: 'DeFi lending protocol', value: 'lending' },
-        { title: 'Fiat Module', description: 'Fiat on/off-ramp', value: 'fiat' }
+        { title: 'Fiat Module', description: 'Fiat on/off-ramp', value: 'fiat' },
+        { title: 'Swidge Module', description: 'Cross-chain swap (swidge = swap + bridge)', value: 'swidge' }
       ]
     })
   }
@@ -64,6 +65,9 @@ export async function runPrompts (options, useDefaults = false) {
 
           case 'fiat':
             return 'What is the fiat provider name? (e.g., "moonpay", "ramp")'
+
+          case 'swidge':
+            return 'What is the protocol name? (e.g., "lifi", "rhino")'
         }
       },
       validate: (value) => {

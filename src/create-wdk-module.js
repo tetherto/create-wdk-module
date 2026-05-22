@@ -23,11 +23,11 @@ import { compileTemplate } from './compile-template.js'
 import { gitInit, getGitAuthor, isGitAvailable } from './utilities/git.js'
 
 /**
- * @typedef {'wallet' | 'swap' | 'bridge' | 'lending' | 'fiat'} ModuleType
+ * @typedef {'wallet' | 'swap' | 'bridge' | 'lending' | 'fiat' | 'swidge'} ModuleType
  */
 
 /**
- * @typedef {CreateWdkModuleCommonOptions & (CreateWdkModuleWalletOptions | CreateWdkModuleProtocolOptions | CreateWdkModuleFiatProviderOptions)} CreateWdkModuleOptions
+ * @typedef {CreateWdkModuleCommonOptions & (CreateWdkModuleWalletOptions | CreateWdkModuleProtocolOptions | CreateWdkModuleFiatProviderOptions | CreateWdkModuleSwidgeOptions)} CreateWdkModuleOptions
  */
 
 /**
@@ -53,6 +53,12 @@ import { gitInit, getGitAuthor, isGitAvailable } from './utilities/git.js'
  * @typedef {Object} CreateWdkModuleFiatProviderOptions
  * @property {'fiat'} type - The module type to create.
  * @property {string} name - The fiat provider's name.
+ */
+
+/**
+ * @typedef {Object} CreateWdkModuleSwidgeOptions
+ * @property {'swidge'} type - The module type to create.
+ * @property {string} name - The swidge protocol's name.
  */
 
 const ROOT_DIR = path.dirname(fileURLToPath(import.meta.url))
@@ -82,6 +88,10 @@ function generatePackageName ({ type, name, blockchain, scope }) {
     case 'fiat':
       packageName = `wdk-protocol-fiat-${name}`
       break
+
+    case 'swidge':
+      packageName = `wdk-protocol-swidge-${name}`
+      break
   }
 
   if (scope) {
@@ -110,6 +120,9 @@ function generateDescription (type, { name, blockchain }) {
 
     case 'fiat':
       return `WDK module to interact with the ${name} fiat provider.`
+
+    case 'swidge':
+      return `WDK module to perform cross-chain swaps via the ${name} protocol.`
   }
 }
 
