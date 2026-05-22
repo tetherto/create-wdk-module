@@ -240,8 +240,6 @@ describe('create-wdk-module', () => {
     test('should include all swidge method stubs', async () => {
       const protocol = await readGeneratedFile('src/lifi-protocol.js')
 
-      expect(protocol).toContain('async bridge (options)')
-      expect(protocol).toContain('async quoteBridge (options)')
       expect(protocol).toContain('async quoteSwidge (options)')
       expect(protocol).toContain('async swidge (options, config)')
       expect(protocol).toContain('async getSwidgeStatus (id, options)')
@@ -249,11 +247,13 @@ describe('create-wdk-module', () => {
       expect(protocol).toContain('async getSupportedTokens (options)')
     })
 
-    test('should not stub swap/quoteSwap since they are inherited from the base class', async () => {
+    test('should not stub swap/quoteSwap/bridge/quoteBridge since they are inherited from the base class', async () => {
       const protocol = await readGeneratedFile('src/lifi-protocol.js')
 
       expect(protocol).not.toMatch(/^\s*async swap /m)
       expect(protocol).not.toMatch(/^\s*async quoteSwap /m)
+      expect(protocol).not.toMatch(/^\s*async bridge /m)
+      expect(protocol).not.toMatch(/^\s*async quoteBridge /m)
     })
   })
 

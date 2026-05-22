@@ -9,16 +9,6 @@ describe('{{pascalCase NAME}}Protocol', () => {
     protocol = new {{pascalCase NAME}}Protocol()
   })
 
-  describe('bridge', () => {
-    test.todo('should successfully execute a cross-chain bridge transfer')
-
-    test.todo('should throw when bridge parameters are invalid')
-  })
-
-  describe('quoteBridge', () => {
-    test.todo('should successfully return a bridge quote')
-  })
-
   describe('quoteSwidge', () => {
     test.todo('should successfully return a swidge quote with fees')
 

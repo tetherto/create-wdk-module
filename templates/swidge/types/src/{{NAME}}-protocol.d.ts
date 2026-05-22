@@ -31,20 +31,6 @@ export default class {{pascalCase NAME}}Protocol extends SwidgeProtocol {
      */
     protected _config: {{pascalCase NAME}}ProtocolConfig;
     /**
-     * Bridges a token to a different blockchain.
-     *
-     * @param {BridgeOptions} options - The bridge's options.
-     * @returns {Promise<BridgeResult>} The bridge's result.
-     */
-    bridge(options: BridgeOptions): Promise<BridgeResult>;
-    /**
-     * Quotes the costs of a bridge operation.
-     *
-     * @param {BridgeOptions} options - The bridge's options.
-     * @returns {Promise<Omit<BridgeResult, 'hash'>>} The bridge's quotes.
-     */
-    quoteBridge(options: BridgeOptions): Promise<Omit<BridgeResult, 'hash'>>;
-    /**
      * Quotes the estimated costs and output of a swidge operation.
      * Returns a non-binding quote; the actual execution is performed
      * by {@link swidge}.
@@ -67,6 +53,7 @@ export default class {{pascalCase NAME}}Protocol extends SwidgeProtocol {
      * @param {string} id - The swidge execution identifier returned by swidge.
      * @param {SwidgeStatusOptions} [options] - Optional hints to assist provider lookups.
      * @returns {Promise<SwidgeStatusResult>} The current swidge status.
+     * @throws {Error} If the id is invalid, or no swidge exists with the given identifier.
      */
     getSwidgeStatus(id: string, options?: SwidgeStatusOptions): Promise<SwidgeStatusResult>;
     /**
@@ -85,8 +72,6 @@ export default class {{pascalCase NAME}}Protocol extends SwidgeProtocol {
 }
 export type IWalletAccount = import("@tetherto/wdk-wallet").IWalletAccount;
 export type IWalletAccountReadOnly = import("@tetherto/wdk-wallet").IWalletAccountReadOnly;
-export type BridgeOptions = import("@tetherto/wdk-wallet/protocols").BridgeOptions;
-export type BridgeResult = import("@tetherto/wdk-wallet/protocols").BridgeResult;
 export type SwidgeOptions = import("@tetherto/wdk-wallet/protocols").SwidgeOptions;
 export type SwidgeQuote = import("@tetherto/wdk-wallet/protocols").SwidgeQuote;
 export type SwidgeResult = import("@tetherto/wdk-wallet/protocols").SwidgeResult;

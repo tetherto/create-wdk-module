@@ -19,9 +19,6 @@ import { SwidgeProtocol } from '@tetherto/wdk-wallet/protocols'
 /** @typedef {import('@tetherto/wdk-wallet').IWalletAccount} IWalletAccount */
 /** @typedef {import('@tetherto/wdk-wallet').IWalletAccountReadOnly} IWalletAccountReadOnly */
 
-/** @typedef {import('@tetherto/wdk-wallet/protocols').BridgeOptions} BridgeOptions */
-/** @typedef {import('@tetherto/wdk-wallet/protocols').BridgeResult} BridgeResult */
-
 /** @typedef {import('@tetherto/wdk-wallet/protocols').SwidgeOptions} SwidgeOptions */
 /** @typedef {import('@tetherto/wdk-wallet/protocols').SwidgeQuote} SwidgeQuote */
 /** @typedef {import('@tetherto/wdk-wallet/protocols').SwidgeResult} SwidgeResult */
@@ -71,26 +68,6 @@ export default class {{pascalCase NAME}}Protocol extends SwidgeProtocol {
      * @type { {{~pascalCase NAME~}}ProtocolConfig}
      */
     this._config = config
-  }
-
-  /**
-   * Bridges a token to a different blockchain.
-   *
-   * @param {BridgeOptions} options - The bridge's options.
-   * @returns {Promise<BridgeResult>} The bridge's result.
-   */
-  async bridge (options) {
-    // TODO: Implement protocol-specific bridge
-  }
-
-  /**
-   * Quotes the costs of a bridge operation.
-   *
-   * @param {BridgeOptions} options - The bridge's options.
-   * @returns {Promise<Omit<BridgeResult, 'hash'>>} The bridge's quotes.
-   */
-  async quoteBridge (options) {
-    // TODO: Implement protocol-specific bridge fee estimation
   }
 
   /**

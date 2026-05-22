@@ -72,8 +72,6 @@ new {{pascalCase NAME}}Protocol(account?, config?)
 
 #### Methods
 
-- `bridge(options)` - Bridge a token to a different blockchain
-- `quoteBridge(options)` - Get a bridge quote
 - `quoteSwidge(options)` - Get a cross-chain swap quote
 - `swidge(options, config?)` - Execute a cross-chain swap
 - `getSwidgeStatus(id, options?)` - Get operation status
@@ -84,6 +82,8 @@ new {{pascalCase NAME}}Protocol(account?, config?)
 
 - `swap(options)` - Swap tokens (delegates to `swidge`)
 - `quoteSwap(options)` - Get a swap quote (delegates to `quoteSwidge`)
+- `bridge(options)` - Bridge a token to a different blockchain (delegates to `swidge`)
+- `quoteBridge(options)` - Get a bridge quote (delegates to `quoteSwidge`)
 
 ## Development
 
