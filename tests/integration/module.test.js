@@ -212,6 +212,51 @@ describe('create-wdk-module', () => {
     })
   })
 
+  describe('swidge module', () => {
+    const MODULE_NAME = 'lifi'
+    const EXPECTED_PACKAGE_NAME = 'wdk-protocol-swidge-lifi'
+    const EXPECTED_DESCRIPTION = 'WDK module to perform cross-chain swaps via the lifi protocol.'
+
+    beforeEach(async () => {
+      await createWdkModule({ type: 'swidge', name: MODULE_NAME, git: false })
+      outputDir = path.join(outputDir, EXPECTED_PACKAGE_NAME)
+    })
+
+    test('should generate the swidge protocol without a blockchain keyword', async () => {
+      const pkg = await readGeneratedJson('package.json')
+
+      expect(pkg.name).toBe(EXPECTED_PACKAGE_NAME)
+      expect(pkg.description).toBe(EXPECTED_DESCRIPTION)
+      expect(pkg.keywords).toEqual(['wdk', 'protocol', 'swidge', 'lifi'])
+    })
+
+    test('should generate the swidge protocol with correct class name', async () => {
+      const protocol = await readGeneratedFile('src/lifi-protocol.js')
+
+      expect(protocol).toContain('class LifiProtocol')
+      expect(protocol).not.toContain('{{pascalCase NAME}}')
+    })
+
+    test('should include all swidge method stubs', async () => {
+      const protocol = await readGeneratedFile('src/lifi-protocol.js')
+
+      expect(protocol).toContain('async quoteSwidge (options)')
+      expect(protocol).toContain('async swidge (options, config)')
+      expect(protocol).toContain('async getSwidgeStatus (id, options)')
+      expect(protocol).toContain('async getSupportedChains ()')
+      expect(protocol).toContain('async getSupportedTokens (options)')
+    })
+
+    test('should not stub swap/quoteSwap/bridge/quoteBridge since they are inherited from the base class', async () => {
+      const protocol = await readGeneratedFile('src/lifi-protocol.js')
+
+      expect(protocol).not.toMatch(/^\s*async swap /m)
+      expect(protocol).not.toMatch(/^\s*async quoteSwap /m)
+      expect(protocol).not.toMatch(/^\s*async bridge /m)
+      expect(protocol).not.toMatch(/^\s*async quoteBridge /m)
+    })
+  })
+
   describe('scoped module', () => {
     const MODULE_NAME = 'stellar'
     const SCOPE = '@tetherto'
