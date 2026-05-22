@@ -3,32 +3,41 @@ import { beforeEach, describe, expect, jest, test } from '@jest/globals'
 import {{pascalCase NAME}}Protocol from '../index.js'
 
 describe('{{pascalCase NAME}}Protocol', () => {
-  let protocol
+  let account,
+      protocol
 
   beforeEach(() => {
-    protocol = new {{pascalCase NAME}}Protocol()
+    account = {
+      sendTransaction: jest.fn()
+    }
+
+    protocol = new {{pascalCase NAME}}Protocol(account)
   })
 
   describe('quoteSwidge', () => {
-    test.todo('should successfully return a swidge quote with fees')
+    test.todo('should successfully quote a swidge operation (exact-in)')
 
-    test.todo('should support exact-in quoting')
-
-    test.todo('should support exact-out quoting')
+    test.todo('should successfully quote a swidge operation (exact-out)')
   })
 
   describe('swidge', () => {
-    test.todo('should successfully execute a cross-chain swap')
+    test.todo('should successfully perform a swidge operation (exact-in)')
 
-    test.todo('should accept optional protocol config')
+    test.todo('should successfully perform a swidge operation (exact-out)')
 
-    test.todo('should throw when swidge parameters are invalid')
+    test.todo('should throw if the swidge fees exceed the max network fee configuration')
+
+    test.todo('should throw if the swidge fees exceed the max protocol fee configuration')
+
+    test.todo('should throw if the account is read-only')
   })
 
   describe('getSwidgeStatus', () => {
-    test.todo('should successfully return the status of a pending operation')
+    test.todo('should successfully return the status of an operation')
 
-    test.todo('should successfully return the status of a completed operation')
+    test.todo('should successfully return the status of an operation by filtering the source and target chain')
+
+    test.todo('should throw if no operation exists for the given id')
   })
 
   describe('getSupportedChains', () => {
