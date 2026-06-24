@@ -23,11 +23,11 @@ import { compileTemplate } from './compile-template.js'
 import { gitInit, getGitAuthor, isGitAvailable } from './utilities/git.js'
 
 /**
- * @typedef {'wallet' | 'swap' | 'bridge' | 'lending' | 'fiat' | 'swidge'} ModuleType
+ * @typedef {'wallet' | 'swap' | 'bridge' | 'lending' | 'fiat' | 'swidge' | 'sda'} ModuleType
  */
 
 /**
- * @typedef {CreateWdkModuleCommonOptions & (CreateWdkModuleWalletOptions | CreateWdkModuleProtocolOptions | CreateWdkModuleFiatProviderOptions | CreateWdkModuleSwidgeOptions)} CreateWdkModuleOptions
+ * @typedef {CreateWdkModuleCommonOptions & (CreateWdkModuleWalletOptions | CreateWdkModuleProtocolOptions | CreateWdkModuleFiatProviderOptions | CreateWdkModuleSwidgeOptions | CreateWdkModuleSdaOptions)} CreateWdkModuleOptions
  */
 
 /**
@@ -61,6 +61,12 @@ import { gitInit, getGitAuthor, isGitAvailable } from './utilities/git.js'
  * @property {string} name - The swidge protocol's name.
  */
 
+/**
+ * @typedef {Object} CreateWdkModuleSdaOptions
+ * @property {'sda'} type - The module type to create.
+ * @property {string} name - The SDA provider's name.
+ */
+
 const ROOT_DIR = path.dirname(fileURLToPath(import.meta.url))
 
 const TEMPLATES_DIR = path.resolve(ROOT_DIR, '../templates')
@@ -91,6 +97,10 @@ function generatePackageName ({ type, name, blockchain, scope }) {
 
     case 'swidge':
       packageName = `wdk-protocol-swidge-${name}`
+      break
+
+    case 'sda':
+      packageName = `wdk-protocol-sda-${name}`
       break
   }
 
@@ -123,6 +133,9 @@ function generateDescription (type, { name, blockchain }) {
 
     case 'swidge':
       return `WDK module to perform cross-chain swaps via the ${name} protocol.`
+
+    case 'sda':
+      return `WDK module to convert and deliver deposits to USDT via the ${name} smart deposit address provider.`
   }
 }
 
