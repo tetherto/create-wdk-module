@@ -86,10 +86,13 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
       quoteRequired: false,
       reusableAddresses: false,
       multiChainAddress: false,
+      custodyModel: 'trusted-operator',
+      clientDerivableAddress: false,
       routeDiscovery: 'full',
       getAddress: false,
       transferStatus: false,
       historyByAddress: false,
+      historyByRecipient: false,
       recovery: 'none',
       disableAddress: false,
       refund: false
@@ -147,6 +150,20 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
    */
   async getDepositAddressTransfers (address, options) {
     // TODO: Implement {{NAME}} transfer history fetching
+  }
+
+  /**
+   * Lists transfers aggregated by recipient across all of that recipient's
+   * deposit addresses and source chains. Only relevant when the provider
+   * supports it (see {@link getCapabilities}).
+   *
+   * @param {string} recipient - The recipient (destination) address.
+   * @param {string | number} destinationChain - The destination chain.
+   * @param {SdaTransfersOptions} [options] - Optional pagination/filtering.
+   * @returns {Promise<SdaTransfer[]>} The transfers routed to the recipient.
+   */
+  async getTransfersByRecipient (recipient, destinationChain, options) {
+    // TODO: Implement {{NAME}} recipient-keyed history (or remove if unsupported)
   }
 
   /**

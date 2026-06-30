@@ -73,6 +73,16 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
      */
     getDepositAddressTransfers(address: string, options?: SdaTransfersOptions): Promise<SdaTransfer[]>;
     /**
+     * Lists transfers aggregated by recipient across all of that recipient's
+     * deposit addresses and source chains.
+     *
+     * @param {string} recipient - The recipient (destination) address.
+     * @param {string | number} destinationChain - The destination chain.
+     * @param {SdaTransfersOptions} [options] - Optional pagination/filtering.
+     * @returns {Promise<SdaTransfer[]>} The transfers routed to the recipient.
+     */
+    getTransfersByRecipient(recipient: string, destinationChain: string | number, options?: SdaTransfersOptions): Promise<SdaTransfer[]>;
+    /**
      * Retrieves the status of a single transfer by its identifier.
      *
      * @param {string} id - The transfer identifier.
