@@ -16,6 +16,7 @@
 /** @typedef {import('@tetherto/wdk-wallet/protocols').SdaRecoveryMode} SdaRecoveryMode */
 /** @typedef {import('@tetherto/wdk-wallet/protocols').SdaRouteDiscoveryMode} SdaRouteDiscoveryMode */
 /** @typedef {import('@tetherto/wdk-wallet/protocols').SdaCustodyModel} SdaCustodyModel */
+/** @typedef {import('@tetherto/wdk-wallet/protocols').SdaActivationModel} SdaActivationModel */
 /** @typedef {import('@tetherto/wdk-wallet/protocols').SdaProtocolConfig} SdaProtocolConfig */
 /** @typedef {import('@tetherto/wdk-wallet/protocols').SdaToken} SdaToken */
 /** @typedef {import('@tetherto/wdk-wallet/protocols').SdaLimits} SdaLimits */

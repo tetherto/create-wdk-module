@@ -3,6 +3,7 @@ export type SdaCapabilities = import("@tetherto/wdk-wallet/protocols").SdaCapabi
 export type SdaRecoveryMode = import("@tetherto/wdk-wallet/protocols").SdaRecoveryMode;
 export type SdaRouteDiscoveryMode = import("@tetherto/wdk-wallet/protocols").SdaRouteDiscoveryMode;
 export type SdaCustodyModel = import("@tetherto/wdk-wallet/protocols").SdaCustodyModel;
+export type SdaActivationModel = import("@tetherto/wdk-wallet/protocols").SdaActivationModel;
 export type SdaProtocolConfig = import("@tetherto/wdk-wallet/protocols").SdaProtocolConfig;
 export type SdaToken = import("@tetherto/wdk-wallet/protocols").SdaToken;
 export type SdaLimits = import("@tetherto/wdk-wallet/protocols").SdaLimits;

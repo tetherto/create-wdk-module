@@ -58,12 +58,28 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
      */
     createDepositAddress(options: SdaCreateOptions): Promise<SdaDepositAddress[]>;
     /**
+     * Derives a deposit address client-side, without a provider call or
+     * activation. Only relevant for `clientDerivableAddress` providers.
+     *
+     * @param {SdaCreateOptions} options - The same options passed to createDepositAddress.
+     * @returns {Promise<string>} The derived deposit address.
+     */
+    deriveDepositAddress(options: SdaCreateOptions): Promise<string>;
+    /**
      * Looks up an existing deposit address by its identifier or address.
      *
      * @param {string} id - The provider SDA identifier, or the deposit address.
      * @returns {Promise<SdaDepositAddress>} The deposit address descriptor.
      */
     getDepositAddress(id: string): Promise<SdaDepositAddress>;
+    /**
+     * Refreshes the activation of a deposit address. Only relevant when the
+     * provider's activation model is `'ttl'` (see {@link getCapabilities}).
+     *
+     * @param {string} id - The deposit-address identifier returned in `SdaDepositAddress.id`.
+     * @returns {Promise<SdaDepositAddress>} The refreshed deposit address descriptor.
+     */
+    renewDepositAddress(id: string): Promise<SdaDepositAddress>;
     /**
      * Lists the deposits observed at a deposit address.
      *

@@ -88,6 +88,7 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
       multiChainAddress: false,
       custodyModel: 'trusted-operator',
       clientDerivableAddress: false,
+      activation: 'none',
       routeDiscovery: 'full',
       getAddress: false,
       transferStatus: false,
@@ -131,6 +132,17 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
   }
 
   /**
+   * Derives a deposit address client-side, without a provider call or
+   * activation. Only relevant for `clientDerivableAddress` providers.
+   *
+   * @param {SdaCreateOptions} options - The same options passed to createDepositAddress.
+   * @returns {Promise<string>} The derived deposit address.
+   */
+  async deriveDepositAddress (options) {
+    // TODO: Implement {{NAME}} client-side derivation (or remove if unsupported)
+  }
+
+  /**
    * Looks up an existing deposit address by its identifier or address. Only
    * relevant when the provider supports it (see {@link getCapabilities}).
    *
@@ -139,6 +151,17 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
    */
   async getDepositAddress (id) {
     // TODO: Implement {{NAME}} deposit-address lookup (or remove if unsupported)
+  }
+
+  /**
+   * Refreshes the activation of a deposit address. Only relevant when the
+   * provider's activation model is `'ttl'` (see {@link getCapabilities}).
+   *
+   * @param {string} id - The deposit-address identifier returned in `SdaDepositAddress.id`.
+   * @returns {Promise<SdaDepositAddress>} The refreshed deposit address descriptor.
+   */
+  async renewDepositAddress (id) {
+    // TODO: Implement {{NAME}} activation refresh (or remove if unsupported)
   }
 
   /**
