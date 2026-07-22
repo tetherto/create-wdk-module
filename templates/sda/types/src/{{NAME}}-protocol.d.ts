@@ -31,50 +31,51 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
      */
     protected _config: {{pascalCase NAME}}ProtocolConfig;
     /**
-     * Returns which optional parts of the interface {{NAME}} implements.
-     *
-     * @returns {SdaCapabilities} The provider's capabilities.
-     */
-    getCapabilities(): SdaCapabilities;
-    /**
      * Lists the conversion routes {{NAME}} supports.
      *
      * @param {SdaRoutesOptions} [options] - Optional filters for route discovery.
      * @returns {Promise<SdaRoute[]>} The supported routes.
+     * @throws {ValueError} If {{NAME}} discovers routes by blockchain pairs and the source or destination blockchain is not set.
      */
     getSupportedRoutes(options?: SdaRoutesOptions): Promise<SdaRoute[]>;
     /**
-     * Fetches a non-binding quote for a deposit.
+     * Creates deposit addresses for the given route and destination.
      *
-     * @param {SdaQuoteOptions} options - The quote options.
-     * @returns {Promise<SdaQuote>} The quoted deposit details.
-     */
-    quoteDeposit(options: SdaQuoteOptions): Promise<SdaQuote>;
-    /**
-     * Creates a deposit address for the given route and destination.
-     *
-     * @param {SdaCreateOptions} options - The address creation options.
+     * @param {SdaCreateDepositAddressOptions} options - The address creation options.
      * @returns {Promise<SdaDepositAddress[]>} The created deposit addresses, one per distinct address.
+     * @throws {ValueError} If `destinationAddress` is omitted and no account was bound at construction.
      */
-    createDepositAddress(options: SdaCreateOptions): Promise<SdaDepositAddress[]>;
+    createDepositAddress(options: SdaCreateDepositAddressOptions): Promise<SdaDepositAddress[]>;
     /**
-     * Derives a deposit address client-side, without a provider call or
-     * activation. Only relevant for `clientDerivableAddress` providers.
+     * Fetches a non-binding quote (estimate) for a deposit — what a given deposit would deliver.
+     * Optional: delete this override if {{NAME}} does not support quoting.
      *
-     * @param {SdaCreateOptions} options - The same options passed to createDepositAddress.
+     * @param {SdaDepositOptions} options - The quote options.
+     * @returns {Promise<SdaDepositQuote>} The quoted deposit details.
+     * @throws {ValueError} If {{NAME}} requires an output asset and none is provided.
+     */
+    quoteDeposit(options: SdaDepositOptions): Promise<SdaDepositQuote>;
+    /**
+     * Derives a deposit address client-side, without a protocol call or activation.
+     * Optional: delete this override if {{NAME}} addresses are not client-derivable.
+     *
+     * @param {SdaCreateDepositAddressOptions} options - The same options passed to createDepositAddress.
      * @returns {Promise<string>} The derived deposit address.
+     * @throws {ValueError} If `destinationAddress` is omitted and no account was bound at construction.
      */
-    deriveDepositAddress(options: SdaCreateOptions): Promise<string>;
+    deriveDepositAddress(options: SdaCreateDepositAddressOptions): Promise<string>;
     /**
-     * Looks up an existing deposit address by its identifier or address.
+     * Looks up an existing deposit address by its identifier.
+     * Optional: delete this override if {{NAME}} does not expose address lookup.
      *
-     * @param {string} id - The provider SDA identifier, or the deposit address.
+     * @param {string} id - The deposit-address identifier returned in `SdaDepositAddress.id`.
      * @returns {Promise<SdaDepositAddress>} The deposit address descriptor.
+     * @throws {NoSuchElementError} If no such address exists.
      */
     getDepositAddress(id: string): Promise<SdaDepositAddress>;
     /**
-     * Refreshes the activation of a deposit address. Only relevant when the
-     * provider's activation model is `'ttl'` (see {@link getCapabilities}).
+     * Refreshes the activation of a deposit address so {{NAME}} keeps monitoring it.
+     * Optional: delete this override if {{NAME}} addresses do not expire.
      *
      * @param {string} id - The deposit-address identifier returned in `SdaDepositAddress.id`.
      * @returns {Promise<SdaDepositAddress>} The refreshed deposit address descriptor.
@@ -82,31 +83,36 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
     renewDepositAddress(id: string): Promise<SdaDepositAddress>;
     /**
      * Lists the deposits observed at a deposit address.
+     * Optional: delete this override if {{NAME}} does not expose pull-based history.
      *
      * @param {string} address - The deposit address to list transfers for.
      * @param {SdaTransfersOptions} [options] - Optional pagination/filtering.
      * @returns {Promise<SdaTransfer[]>} The transfers for the address.
      */
-    getDepositAddressTransfers(address: string, options?: SdaTransfersOptions): Promise<SdaTransfer[]>;
+    getTransfers(address: string, options?: SdaTransfersOptions): Promise<SdaTransfer[]>;
     /**
      * Lists transfers aggregated by recipient across all of that recipient's
      * deposit addresses and source chains.
+     * Optional: delete this override if {{NAME}} does not expose recipient-keyed history.
      *
+     * @param {string | number} destinationChain - The destination chain the transfers are delivered to.
      * @param {string} recipient - The recipient (destination) address.
-     * @param {string | number} destinationChain - The destination chain.
      * @param {SdaTransfersOptions} [options] - Optional pagination/filtering.
      * @returns {Promise<SdaTransfer[]>} The transfers routed to the recipient.
      */
-    getTransfersByRecipient(recipient: string, destinationChain: string | number, options?: SdaTransfersOptions): Promise<SdaTransfer[]>;
+    getTransfersByRecipient(destinationChain: string | number, recipient: string, options?: SdaTransfersOptions): Promise<SdaTransfer[]>;
     /**
-     * Retrieves the status of a single transfer by its identifier.
+     * Retrieves a single transfer by its identifier.
+     * Optional: delete this override if {{NAME}} does not expose status-by-transfer-id.
      *
      * @param {string} id - The transfer identifier.
      * @returns {Promise<SdaTransfer>} The transfer's current status.
+     * @throws {NoSuchElementError} If no such transfer exists.
      */
-    getTransferStatus(id: string): Promise<SdaTransfer>;
+    getTransfer(id: string): Promise<SdaTransfer>;
     /**
      * Recovers a deposit or address that was not picked up automatically.
+     * Optional: delete this override if {{NAME}} does not support recovery.
      *
      * @param {SdaRecoveryOptions} options - The recovery options.
      * @returns {Promise<SdaRecoveryResult>} The recovery outcome.
@@ -114,20 +120,20 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
     recoverDepositAddress(options: SdaRecoveryOptions): Promise<SdaRecoveryResult>;
     /**
      * Disables a deposit address so it no longer accepts deposits.
+     * Optional: delete this override if {{NAME}} does not support disabling addresses.
      *
-     * @param {string} id - The provider SDA identifier, or the deposit address.
-     * @returns {Promise<void>}
+     * @param {string} id - The deposit-address identifier returned in `SdaDepositAddress.id`.
+     * @returns {Promise<void>} Resolves once the address has been disabled.
      */
     disableDepositAddress(id: string): Promise<void>;
 }
 export type IWalletAccount = import("@tetherto/wdk-wallet").IWalletAccount;
 export type IWalletAccountReadOnly = import("@tetherto/wdk-wallet").IWalletAccountReadOnly;
-export type SdaCapabilities = import("@tetherto/wdk-wallet/protocols").SdaCapabilities;
 export type SdaRoutesOptions = import("@tetherto/wdk-wallet/protocols").SdaRoutesOptions;
 export type SdaRoute = import("@tetherto/wdk-wallet/protocols").SdaRoute;
-export type SdaQuoteOptions = import("@tetherto/wdk-wallet/protocols").SdaQuoteOptions;
-export type SdaQuote = import("@tetherto/wdk-wallet/protocols").SdaQuote;
-export type SdaCreateOptions = import("@tetherto/wdk-wallet/protocols").SdaCreateOptions;
+export type SdaDepositOptions = import("@tetherto/wdk-wallet/protocols").SdaDepositOptions;
+export type SdaDepositQuote = import("@tetherto/wdk-wallet/protocols").SdaDepositQuote;
+export type SdaCreateDepositAddressOptions = import("@tetherto/wdk-wallet/protocols").SdaCreateDepositAddressOptions;
 export type SdaDepositAddress = import("@tetherto/wdk-wallet/protocols").SdaDepositAddress;
 export type SdaTransfersOptions = import("@tetherto/wdk-wallet/protocols").SdaTransfersOptions;
 export type SdaTransfer = import("@tetherto/wdk-wallet/protocols").SdaTransfer;
@@ -142,9 +148,5 @@ export type {{pascalCase NAME}}ProtocolConfig = {
      * - The {{NAME}} API key, when required.
      */
     apiKey?: string;
-    /**
-     * - Refund address used when a call omits one.
-     */
-    defaultRefundAddress?: string;
 };
 import { SdaProtocol } from '@tetherto/wdk-wallet/protocols';

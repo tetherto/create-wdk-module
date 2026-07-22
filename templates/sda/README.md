@@ -21,37 +21,33 @@ import {{pascalCase NAME}}Protocol from '{{PACKAGE_NAME}}'
 // Create the SDA protocol (account is optional; its address is the default destination)
 const sda = new {{pascalCase NAME}}Protocol(account, { apiKey: '...' })
 
-// Discover what the provider implements
-const capabilities = sda.getCapabilities()
+// Discover supported routes (source chains, input tokens, output assets, limits)
+const routes = await sda.getSupportedRoutes({ outputAsset: 'USDT' })
 
-// Discover supported routes (source chains, input tokens, destination assets, limits)
-const routes = await sda.getSupportedRoutes({ destinationAsset: 'USDT' })
+// Optionally fetch a non-binding quote before funding the address
+// (throws UnsupportedOperationError if the provider does not support quoting)
+const quote = await sda.quoteDeposit({
+  sourceChain: 'arbitrum',
+  inputToken: 'USDC',
+  destinationChain: 'polygon',
+  outputAsset: 'USDT',
+  inputAmount: 1000000n
+})
 
-// Optionally fetch a quote up front (required by some providers)
-if (capabilities.quoting) {
-  const quote = await sda.quoteDeposit({
-    sourceChain: 'arbitrum',
-    inputToken: 'USDC',
-    destinationChain: 'polygon',
-    destinationAsset: 'USDT',
-    inputAmount: 1000000n
-  })
-
-  console.log('Quote:', quote)
-}
+console.log('Quote:', quote)
 
 // Create a deposit address for the user to send funds to
 const deposit = await sda.createDepositAddress({
   sourceChains: ['arbitrum'],
   destinationChain: 'polygon',
-  destinationAsset: 'USDT',
+  outputAsset: 'USDT',
   destinationAddress: '0x...'
 })
 
 console.log('Send funds to:', deposit.address)
 
 // Track deposits observed at the address
-const transfers = await sda.getDepositAddressTransfers(deposit.address)
+const transfers = await sda.getTransfers(deposit.address)
 console.log('Transfers:', transfers)
 ```
 
@@ -69,22 +65,26 @@ new {{pascalCase NAME}}Protocol(account?, config?)
 - `config` - Protocol configuration (optional)
   - `apiUrl` - Overrides the provider's API base URL (optional)
   - `apiKey` - The provider API key, when required (optional)
-  - `defaultRefundAddress` - Refund address used when a call omits one (optional)
 
 #### Required methods
 
-- `getCapabilities()` - Returns which optional methods this provider implements
 - `getSupportedRoutes(options?)` - List supported routes, input tokens and limits
 - `createDepositAddress(options)` - Create a deposit address and its descriptor
-- `getDepositAddressTransfers(address, options?)` - List deposits seen at an address
 
-#### Optional methods (advertised via `getCapabilities()`)
+#### Optional methods
+
+Delete any your provider does not implement — the base class throws
+`UnsupportedOperationError` for those.
 
 - `quoteDeposit(options)` - Fetch a non-binding deposit quote
-- `getDepositAddress(idOrAddress)` - Look up an existing deposit address
-- `getTransferStatus(id)` - Status of a single transfer
+- `deriveDepositAddress(options)` - Derive a deposit address client-side
+- `getDepositAddress(id)` - Look up an existing deposit address
+- `renewDepositAddress(id)` - Refresh a time-limited address's activation
+- `getTransfers(address, options?)` - List deposits seen at an address
+- `getTransfersByRecipient(destinationChain, recipient, options?)` - List transfers by recipient
+- `getTransfer(id)` - Retrieve a single transfer
 - `recoverDepositAddress(options)` - Re-index or reactivate an undetected deposit/address
-- `disableDepositAddress(idOrAddress)` - Disable a deposit address
+- `disableDepositAddress(id)` - Disable a deposit address
 
 ## Development
 

@@ -14,14 +14,10 @@ describe('{{pascalCase NAME}}Protocol', () => {
     protocol = new {{pascalCase NAME}}Protocol(account)
   })
 
-  describe('getCapabilities', () => {
-    test.todo('should return the provider capability descriptor')
-  })
-
   describe('getSupportedRoutes', () => {
     test.todo('should successfully return supported routes')
 
-    test.todo('should filter routes by source chain, input token and destination asset')
+    test.todo('should filter routes by source chain, input token and output asset')
   })
 
   describe('quoteDeposit', () => {
@@ -32,8 +28,6 @@ describe('{{pascalCase NAME}}Protocol', () => {
     test.todo('should successfully create a deposit address and descriptor')
 
     test.todo('should default the destination address to the account address')
-
-    test.todo('should pass through the refund address and reuse flag')
   })
 
   describe('getDepositAddress', () => {
@@ -42,12 +36,12 @@ describe('{{pascalCase NAME}}Protocol', () => {
     test.todo('should throw if no address exists')
   })
 
-  describe('getDepositAddressTransfers', () => {
+  describe('getTransfers', () => {
     test.todo('should successfully return transfers for an address')
   })
 
-  describe('getTransferStatus', () => {
-    test.todo('should successfully return the status of a transfer')
+  describe('getTransfer', () => {
+    test.todo('should successfully return a single transfer')
 
     test.todo('should throw if no transfer exists for the given id')
   })
