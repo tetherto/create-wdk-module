@@ -257,6 +257,48 @@ describe('create-wdk-module', () => {
     })
   })
 
+  describe('sda module', () => {
+    const MODULE_NAME = 'rhino'
+    const EXPECTED_PACKAGE_NAME = 'wdk-protocol-sda-rhino'
+    const EXPECTED_DESCRIPTION = 'WDK module to convert and deliver deposits to USDT via the rhino smart deposit address provider.'
+
+    beforeEach(async () => {
+      await createWdkModule({ type: 'sda', name: MODULE_NAME, git: false })
+      outputDir = path.join(outputDir, EXPECTED_PACKAGE_NAME)
+    })
+
+    test('should generate the sda protocol without a blockchain keyword', async () => {
+      const pkg = await readGeneratedJson('package.json')
+
+      expect(pkg.name).toBe(EXPECTED_PACKAGE_NAME)
+      expect(pkg.description).toBe(EXPECTED_DESCRIPTION)
+      expect(pkg.keywords).toEqual(['wdk', 'protocol', 'sda', 'rhino'])
+    })
+
+    test('should generate the sda protocol with correct class name', async () => {
+      const protocol = await readGeneratedFile('src/rhino-protocol.js')
+
+      expect(protocol).toContain('class RhinoProtocol')
+      expect(protocol).not.toContain('{{pascalCase NAME}}')
+    })
+
+    test('should include all sda method stubs', async () => {
+      const protocol = await readGeneratedFile('src/rhino-protocol.js')
+
+      expect(protocol).toContain('async getSupportedRoutes (options)')
+      expect(protocol).toContain('async createDepositAddress (options)')
+      expect(protocol).toContain('async quoteDeposit (options)')
+      expect(protocol).toContain('async deriveDepositAddress (options)')
+      expect(protocol).toContain('async getDepositAddress (id)')
+      expect(protocol).toContain('async renewDepositAddress (id)')
+      expect(protocol).toContain('async getTransfers (address, options)')
+      expect(protocol).toContain('async getTransfersByRecipient (destinationChain, recipient, options)')
+      expect(protocol).toContain('async getTransfer (id)')
+      expect(protocol).toContain('async recoverDepositAddress (options)')
+      expect(protocol).toContain('async disableDepositAddress (id)')
+    })
+  })
+
   describe('scoped module', () => {
     const MODULE_NAME = 'stellar'
     const SCOPE = '@tetherto'

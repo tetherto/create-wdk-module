@@ -18,16 +18,32 @@ describe('{{pascalCase NAME}}Protocol', () => {
     test.todo('should successfully return supported routes')
 
     test.todo('should filter routes by source chain, input token and output asset')
-  })
 
-  describe('quoteDeposit', () => {
-    test.todo('should successfully quote a deposit')
+    test.todo('should throw if the source or destination blockchain is not set')
   })
 
   describe('createDepositAddress', () => {
     test.todo('should successfully create a deposit address and descriptor')
 
     test.todo('should default the destination address to the account address')
+
+    test.todo('should throw if destinationAddress is omitted and no account is bound')
+
+    test.todo('should throw if the output asset is required and not provided')
+  })
+
+  describe('quoteDeposit', () => {
+    test.todo('should successfully quote a deposit')
+
+    test.todo('should throw if the output asset is required and not provided')
+  })
+
+  describe('deriveDepositAddress', () => {
+    test.todo('should successfully derive a deposit address client-side')
+
+    test.todo('should default the destination address to the account address')
+
+    test.todo('should throw if destinationAddress is omitted and no account is bound')
   })
 
   describe('getDepositAddress', () => {
@@ -36,8 +52,20 @@ describe('{{pascalCase NAME}}Protocol', () => {
     test.todo('should throw if no address exists')
   })
 
+  describe('renewDepositAddress', () => {
+    test.todo('should successfully refresh the activation of a deposit address')
+  })
+
   describe('getTransfers', () => {
     test.todo('should successfully return transfers for an address')
+
+    test.todo('should paginate/filter transfers when options are provided')
+  })
+
+  describe('getTransfersByRecipient', () => {
+    test.todo('should successfully return transfers routed to a recipient')
+
+    test.todo('should paginate/filter transfers when options are provided')
   })
 
   describe('getTransfer', () => {

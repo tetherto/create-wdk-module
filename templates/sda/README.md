@@ -7,6 +7,12 @@ user sends a supported stablecoin (or native token) from any supported source
 chain, and the provider converts it and delivers the destination asset (e.g.
 USDT) to the destination chain and address.
 
+> **Customizing this module:** describe {{NAME}}'s custody model (self-custodial vs
+> trusted-operator), activation lifecycle (live on creation, activation-required, or
+> ttl), and how routes are discovered (all at once vs per source/destination chain
+> pair). Delete any optional method {{NAME}} does not implement — the base class
+> throws `UnsupportedOperationError` for those.
+
 ## Installation
 
 ```bash
@@ -37,7 +43,8 @@ const quote = await sda.quoteDeposit({
 console.log('Quote:', quote)
 
 // Create a deposit address for the user to send funds to
-const deposit = await sda.createDepositAddress({
+// (returns one descriptor per distinct address; single-address providers return a one-element array)
+const [deposit] = await sda.createDepositAddress({
   sourceChains: ['arbitrum'],
   destinationChain: 'polygon',
   outputAsset: 'USDT',

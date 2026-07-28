@@ -44,11 +44,11 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
      * @param {SdaCreateDepositAddressOptions} options - The address creation options.
      * @returns {Promise<SdaDepositAddress[]>} The created deposit addresses, one per distinct address.
      * @throws {ValueError} If `destinationAddress` is omitted and no account was bound at construction.
+     * @throws {ValueError} If {{NAME}} requires an output asset and none is provided.
      */
     createDepositAddress(options: SdaCreateDepositAddressOptions): Promise<SdaDepositAddress[]>;
     /**
      * Fetches a non-binding quote (estimate) for a deposit — what a given deposit would deliver.
-     * Optional: delete this override if {{NAME}} does not support quoting.
      *
      * @param {SdaDepositOptions} options - The quote options.
      * @returns {Promise<SdaDepositQuote>} The quoted deposit details.
@@ -57,7 +57,6 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
     quoteDeposit(options: SdaDepositOptions): Promise<SdaDepositQuote>;
     /**
      * Derives a deposit address client-side, without a protocol call or activation.
-     * Optional: delete this override if {{NAME}} addresses are not client-derivable.
      *
      * @param {SdaCreateDepositAddressOptions} options - The same options passed to createDepositAddress.
      * @returns {Promise<string>} The derived deposit address.
@@ -66,7 +65,6 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
     deriveDepositAddress(options: SdaCreateDepositAddressOptions): Promise<string>;
     /**
      * Looks up an existing deposit address by its identifier.
-     * Optional: delete this override if {{NAME}} does not expose address lookup.
      *
      * @param {string} id - The deposit-address identifier returned in `SdaDepositAddress.id`.
      * @returns {Promise<SdaDepositAddress>} The deposit address descriptor.
@@ -75,7 +73,6 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
     getDepositAddress(id: string): Promise<SdaDepositAddress>;
     /**
      * Refreshes the activation of a deposit address so {{NAME}} keeps monitoring it.
-     * Optional: delete this override if {{NAME}} addresses do not expire.
      *
      * @param {string} id - The deposit-address identifier returned in `SdaDepositAddress.id`.
      * @returns {Promise<SdaDepositAddress>} The refreshed deposit address descriptor.
@@ -83,7 +80,6 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
     renewDepositAddress(id: string): Promise<SdaDepositAddress>;
     /**
      * Lists the deposits observed at a deposit address.
-     * Optional: delete this override if {{NAME}} does not expose pull-based history.
      *
      * @param {string} address - The deposit address to list transfers for.
      * @param {SdaTransfersOptions} [options] - Optional pagination/filtering.
@@ -93,7 +89,6 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
     /**
      * Lists transfers aggregated by recipient across all of that recipient's
      * deposit addresses and source chains.
-     * Optional: delete this override if {{NAME}} does not expose recipient-keyed history.
      *
      * @param {string | number} destinationChain - The destination chain the transfers are delivered to.
      * @param {string} recipient - The recipient (destination) address.
@@ -103,7 +98,6 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
     getTransfersByRecipient(destinationChain: string | number, recipient: string, options?: SdaTransfersOptions): Promise<SdaTransfer[]>;
     /**
      * Retrieves a single transfer by its identifier.
-     * Optional: delete this override if {{NAME}} does not expose status-by-transfer-id.
      *
      * @param {string} id - The transfer identifier.
      * @returns {Promise<SdaTransfer>} The transfer's current status.
@@ -112,7 +106,6 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
     getTransfer(id: string): Promise<SdaTransfer>;
     /**
      * Recovers a deposit or address that was not picked up automatically.
-     * Optional: delete this override if {{NAME}} does not support recovery.
      *
      * @param {SdaRecoveryOptions} options - The recovery options.
      * @returns {Promise<SdaRecoveryResult>} The recovery outcome.
@@ -120,7 +113,6 @@ export default class {{pascalCase NAME}}Protocol extends SdaProtocol {
     recoverDepositAddress(options: SdaRecoveryOptions): Promise<SdaRecoveryResult>;
     /**
      * Disables a deposit address so it no longer accepts deposits.
-     * Optional: delete this override if {{NAME}} does not support disabling addresses.
      *
      * @param {string} id - The deposit-address identifier returned in `SdaDepositAddress.id`.
      * @returns {Promise<void>} Resolves once the address has been disabled.
