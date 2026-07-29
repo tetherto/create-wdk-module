@@ -44,7 +44,8 @@ export async function runPrompts (options, useDefaults = false) {
         { title: 'Bridge Module', description: 'Cross-chain bridging', value: 'bridge' },
         { title: 'Lending Module', description: 'DeFi lending protocol', value: 'lending' },
         { title: 'Fiat Module', description: 'Fiat on/off-ramp', value: 'fiat' },
-        { title: 'Swidge Module', description: 'Cross-chain swap (swidge = swap + bridge)', value: 'swidge' }
+        { title: 'Swidge Module', description: 'Cross-chain swap (swidge = swap + bridge)', value: 'swidge' },
+        { title: 'SDA Module', description: 'Smart Deposit Address (deposit-and-convert to USDT)', value: 'sda' }
       ]
     })
   }
@@ -68,6 +69,9 @@ export async function runPrompts (options, useDefaults = false) {
 
           case 'swidge':
             return 'What is the protocol name? (e.g., "lifi", "rhino")'
+
+          case 'sda':
+            return 'What is the provider name? (e.g., "rhino", "orchestra")'
         }
       },
       validate: (value) => {

@@ -33,6 +33,7 @@ npx @tetherto/create-wdk-module@latest wallet stellar --scope @myorg
 | `lending` | DeFi lending protocol | `wdk-protocol-lending-compound-evm` |
 | `fiat` | Fiat on/off-ramp provider | `wdk-protocol-fiat-moonpay` |
 | `swidge` | Cross-chain swap (swap + bridge) | `wdk-protocol-swidge-lifi` |
+| `sda` | Smart deposit address provider | `wdk-protocol-sda-rhino` |
 
 ## CLI Options
 
@@ -64,6 +65,7 @@ $ npx @tetherto/create-wdk-module@latest
     Lending Module (DeFi lending protocol)
     Fiat Module (fiat on/off-ramp)
     Swidge Module (cross-chain swap)
+    SDA Module (smart deposit address)
 
 ? What is the blockchain name? (e.g., "stellar", "solana")
   > stellar
@@ -129,7 +131,7 @@ wdk-wallet-stellar/
 
 ### Protocol Modules
 
-Protocol modules (swap, bridge, lending, fiat, swidge) follow a similar structure with a single provider file:
+Protocol modules (swap, bridge, lending, fiat, swidge, sda) follow a similar structure with a single provider file:
 
 ```
 wdk-protocol-swap-jupiter-solana/

@@ -32,7 +32,7 @@ program
   .name('create-wdk-module')
   .description('Create WDK modules with a single command')
   .version('1.0.0-beta.1')
-  .argument('[type]', 'Module type (wallet/swap/bridge/lending/fiat/swidge)')
+  .argument('[type]', 'Module type (wallet/swap/bridge/lending/fiat/swidge/sda)')
   .argument('[name]', 'Module name')
   .argument('[blockchain]', 'Target blockchain (for protocol modules)')
   .option('-s, --scope <SCOPE>', 'npm scope (e.g., @myorg)')
@@ -42,7 +42,7 @@ program
   .action(async (type, name, blockchain, { scope, git, yes }) => {
     if (type && !validateModuleType(type)) {
       console.error(pc.red(`Invalid module type: ${type}`))
-      console.error(pc.dim('Valid types: wallet, swap, bridge, lending, fiat, swidge'))
+      console.error(pc.dim('Valid types: wallet, swap, bridge, lending, fiat, swidge, sda'))
       process.exit(1)
     }
 
