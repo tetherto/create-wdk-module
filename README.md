@@ -1,8 +1,10 @@
 # create-wdk-module
 
-Create WDK (Wallet Development Kit) modules with a single command.
+Create modules for WDK (Wallet Development Kit) by Tether with a single command.
 
 https://github.com/user-attachments/assets/e342eeef-1e45-4ac0-bd16-bb5cdd63d501
+
+See the [Create WDK Module documentation](https://docs.wdk.tether.io/tools/create-wdk-module/).
 
 ## Quick Start
 
@@ -165,7 +167,7 @@ npm test
 
 ## Resources
 
-- [WDK Documentation](https://docs.wallet.tether.io)
+- [WDK Documentation](https://docs.wdk.tether.io/)
 - [wdk-wallet](https://github.com/tetherto/wdk-wallet) - Base interfaces
 - [wdk-wallet-solana](https://github.com/tetherto/wdk-wallet-solana) - Reference implementation
 
