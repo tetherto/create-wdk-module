@@ -87,10 +87,9 @@ npm test
 
 # Run linter
 npm run lint
-
-# Build types
-npm run build:types
 ```
+
+The type declarations in `types/` are written by hand. Update them whenever the public API in `src/` changes.
 
 ## License
 

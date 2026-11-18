@@ -69,6 +69,8 @@ npm test
 npm run lint
 ```
 
+The type declarations in `types/` are written by hand. Update them whenever the public API in `src/` changes.
+
 ## License
 
 Apache-2.0
