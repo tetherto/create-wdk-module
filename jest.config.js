@@ -1,6 +1,7 @@
 export default {
   testEnvironment: 'node',
-  testMatch: ['<rootDir>/tests/**/*.test.js'],
+  roots: ['<rootDir>/tests'],
+  testMatch: ['**/*.test.js'],
   collectCoverageFrom: ['src/**/*.js'],
   coverageReporters: ['text', 'html']
 }
