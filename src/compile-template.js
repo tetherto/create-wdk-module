@@ -78,7 +78,9 @@ async function getAllFilenames (dir) {
  * @returns {string} The compiled text.
  */
 function compile (text, context) {
-  const template = Handlebars.compile(text)
+  // Templates are source files, not HTML, so values must not be HTML-escaped
+  // (e.g. the author's '<email>').
+  const template = Handlebars.compile(text, { noEscape: true })
 
   return template(context)
 }

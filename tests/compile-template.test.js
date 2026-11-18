@@ -58,6 +58,18 @@ describe('compileTemplate', () => {
     )
   })
 
+  test('should not html-escape placeholder values', async () => {
+    mockFs.readdir.mockResolvedValue([createDirent('package.json', false)])
+    mockFs.readFile.mockResolvedValue('"author": "{{AUTHOR}}"')
+
+    await compileTemplate({ templateDir: TEMPLATE_DIR, targetDir: TARGET_DIR, context: { ...TEMPLATE_CONTEXT, AUTHOR: 'Jane Doe <jane@example.com>' } })
+
+    expect(mockFs.writeFile).toHaveBeenCalledWith(
+      expect.any(String),
+      '"author": "Jane Doe <jane@example.com>"'
+    )
+  })
+
   test('should recurse into nested directories', async () => {
     mockFs.readdir
       .mockResolvedValueOnce([
