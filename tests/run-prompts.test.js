@@ -91,6 +91,32 @@ describe('runPrompts', () => {
     expect(result.blockchain).toBe('mychain')
   })
 
+  test('should use the variant answer from prompts for wallet modules', async () => {
+    mockPromptsReturn = {
+      type: 'wallet',
+      name: 'evm',
+      variant: 'railgun',
+      git: true
+    }
+
+    const result = await runPrompts({})
+
+    expect(result.variant).toBe('railgun')
+  })
+
+  test('should leave the variant undefined when the answer is empty', async () => {
+    mockPromptsReturn = {
+      type: 'wallet',
+      name: 'stellar',
+      variant: '',
+      git: true
+    }
+
+    const result = await runPrompts({})
+
+    expect(result.variant).toBeUndefined()
+  })
+
   test('should throw cancelled when the user cancels the prompts', async () => {
     mockPromptsReturn = {}
 

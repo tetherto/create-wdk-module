@@ -81,6 +81,22 @@ export async function runPrompts (options, useDefaults = false) {
     })
   }
 
+  if (options.variant === undefined && !useDefaults) {
+    questions.push({
+      type: (_prev, values) => (options.type || values.type) === 'wallet' ? 'text' : null,
+      name: 'variant',
+      message: (_prev, values) => `Wallet variant (leave empty for none, e.g., "railgun" for wdk-wallet-${options.name || values.name}-railgun):`,
+      validate: (value) => {
+        if (!value) {
+          return true
+        }
+
+        const { valid, errors } = validateModuleName(value)
+        return valid || errors[0]
+      }
+    })
+  }
+
   if (!options.blockchain) {
     questions.push({
       type: (_prev, values) => {
@@ -145,6 +161,7 @@ export async function runPrompts (options, useDefaults = false) {
   return {
     type: options.type ?? answers.type,
     name: options.name ?? answers.name,
+    variant: options.variant ?? (answers.variant || undefined),
     blockchain: options.blockchain ?? answers.blockchainOther ?? answers.blockchain,
     scope: options.scope ?? answers.scope,
     git: options.git ?? answers.git ?? true

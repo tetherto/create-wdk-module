@@ -22,7 +22,7 @@ jest.unstable_mockModule('fs-extra', () => ({ default: mockFs }))
 jest.unstable_mockModule('ora', () => ({ default: () => mockOraInstance }))
 jest.unstable_mockModule('child_process', () => ({ execSync: mockExecSync, spawn: jest.fn() }))
 
-const { createWdkModule } = await import('../src/create-wdk-module.js')
+const { createWdkModule, generatePackageName } = await import('../src/create-wdk-module.js')
 
 const WALLET_OPTIONS = {
   type: 'wallet',
@@ -78,6 +78,15 @@ describe('createWdkModule', () => {
     expect(writtenContent).toBe('wdk-wallet-stellar')
   })
 
+  test('should append the variant to the wallet name', async () => {
+    setupTemplateFs()
+
+    await createWdkModule({ ...WALLET_OPTIONS, name: 'evm', variant: 'railgun' })
+
+    const writtenContent = mockFs.writeFile.mock.calls[0][1]
+    expect(writtenContent).toBe('wdk-wallet-evm-railgun')
+  })
+
   test('should strip the scope prefix from the directory name', async () => {
     setupTemplateFs()
 
@@ -111,5 +120,16 @@ describe('createWdkModule', () => {
 
     const gitInitCalls = mockExecSync.mock.calls.filter(c => c[0] === 'git init')
     expect(gitInitCalls.length).toBe(0)
+  })
+})
+
+describe('generatePackageName', () => {
+  test.each([
+    [{ type: 'wallet', name: 'stellar' }, 'wdk-wallet-stellar'],
+    [{ type: 'wallet', name: 'evm', variant: 'railgun' }, 'wdk-wallet-evm-railgun'],
+    [{ type: 'swap', name: 'jupiter', blockchain: 'solana' }, 'wdk-protocol-swap-jupiter-solana'],
+    [{ type: 'fiat', name: 'moonpay', scope: '@myorg' }, '@myorg/wdk-protocol-fiat-moonpay']
+  ])('should generate the package name for %o', (options, expected) => {
+    expect(generatePackageName(options)).toBe(expected)
   })
 })

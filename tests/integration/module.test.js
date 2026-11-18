@@ -299,6 +299,25 @@ describe('create-wdk-module', () => {
     })
   })
 
+  describe('wallet module with a variant', () => {
+    beforeEach(async () => {
+      await createWdkModule({ type: 'wallet', name: 'evm', variant: 'railgun', git: false })
+      outputDir = path.join(outputDir, 'wdk-wallet-evm-railgun')
+    })
+
+    test('should include the variant in the package, file and class names', async () => {
+      const pkg = await readGeneratedJson('package.json')
+      expect(pkg.name).toBe('wdk-wallet-evm-railgun')
+
+      expect(await fileExists('src/wallet-manager-evm-railgun.js')).toBe(true)
+      expect(await fileExists('src/wallet-account-evm-railgun.js')).toBe(true)
+      expect(await fileExists('src/wallet-account-read-only-evm-railgun.js')).toBe(true)
+
+      const manager = await readGeneratedFile('src/wallet-manager-evm-railgun.js')
+      expect(manager).toContain('class WalletManagerEvmRailgun')
+    })
+  })
+
   describe('scoped module', () => {
     const MODULE_NAME = 'stellar'
     const SCOPE = '@tetherto'
