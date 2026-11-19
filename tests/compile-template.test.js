@@ -1,3 +1,5 @@
+import path from 'path'
+
 import { jest } from '@jest/globals'
 
 const mockFs = {
@@ -13,8 +15,8 @@ jest.unstable_mockModule('fs-extra', () => ({ default: mockFs }))
 
 const { compileTemplate } = await import('../src/compile-template.js')
 
-const TEMPLATE_DIR = '/templates/wallet'
-const TARGET_DIR = '/output/wdk-wallet-stellar'
+const TEMPLATE_DIR = path.join(path.sep, 'templates', 'wallet')
+const TARGET_DIR = path.join(path.sep, 'output', 'wdk-wallet-stellar')
 const TEMPLATE_CONTEXT = {
   PACKAGE_NAME: 'wdk-wallet-stellar',
   MODULE_NAME: 'wdk-wallet-stellar',
@@ -41,7 +43,7 @@ describe('compileTemplate', () => {
     await compileTemplate({ templateDir: TEMPLATE_DIR, targetDir: TARGET_DIR, context: TEMPLATE_CONTEXT})
 
     expect(mockFs.writeFile).toHaveBeenCalledWith(
-      '/output/wdk-wallet-stellar/wallet-manager-stellar.js',
+      path.join(TARGET_DIR, 'wallet-manager-stellar.js'),
       ''
     )
   })
@@ -53,7 +55,7 @@ describe('compileTemplate', () => {
     await compileTemplate({ templateDir: TEMPLATE_DIR, targetDir: TARGET_DIR, context: TEMPLATE_CONTEXT})
 
     expect(mockFs.writeFile).toHaveBeenCalledWith(
-      '/output/wdk-wallet-stellar/index.js',
+      path.join(TARGET_DIR, 'index.js'),
       'module: wdk-wallet-stellar, class: Stellar'
     )
   })
@@ -69,11 +71,25 @@ describe('compileTemplate', () => {
     await compileTemplate({ templateDir: TEMPLATE_DIR, targetDir: TARGET_DIR, context: TEMPLATE_CONTEXT})
 
     expect(mockFs.readdir).toHaveBeenCalledTimes(2)
-    expect(mockFs.readdir).toHaveBeenCalledWith('/templates/wallet', { withFileTypes: true })
-    expect(mockFs.readdir).toHaveBeenCalledWith('/templates/wallet/src', { withFileTypes: true })
+    expect(mockFs.readdir).toHaveBeenCalledWith(TEMPLATE_DIR, { withFileTypes: true })
+    expect(mockFs.readdir).toHaveBeenCalledWith(path.join(TEMPLATE_DIR, 'src'), { withFileTypes: true })
     expect(mockFs.writeFile).toHaveBeenCalledWith(
-      '/output/wdk-wallet-stellar/src/main.js',
+      path.join(TARGET_DIR, 'src', 'main.js'),
       'content'
+    )
+  })
+
+  test('should replace placeholders in file names inside nested directories', async () => {
+    mockFs.readdir
+      .mockResolvedValueOnce([createDirent('src', true)])
+      .mockResolvedValueOnce([createDirent('{{NAME}}-protocol.js', false)])
+    mockFs.readFile.mockResolvedValue('')
+
+    await compileTemplate({ templateDir: TEMPLATE_DIR, targetDir: TARGET_DIR, context: TEMPLATE_CONTEXT })
+
+    expect(mockFs.writeFile).toHaveBeenCalledWith(
+      path.join(TARGET_DIR, 'src', 'stellar-protocol.js'),
+      ''
     )
   })
 })

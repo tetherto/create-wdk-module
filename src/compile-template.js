@@ -103,7 +103,7 @@ export async function compileTemplate ({ templateDir, targetDir, context }) {
   const filenames = await getAllFilenames(templateDir)
 
   for (const filename of filenames) {
-    const relativePath = path.relative(templateDir, filename)
+    const relativePath = path.relative(templateDir, filename).split(path.sep).join('/')
 
     let compiledRelativePath = compile(relativePath, context)
 

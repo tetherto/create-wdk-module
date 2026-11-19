@@ -6,6 +6,9 @@ import { createWdkModule } from '../../src/create-wdk-module.js'
 
 const SEED_NAME = 'create-wdk-module-integration-'
 
+const ORIGINAL_CWD = process.cwd()
+
+let tempDir
 let outputDir
 
 async function readGeneratedFile (relativePath) {
@@ -41,12 +44,14 @@ async function getAllTextFiles (dir) {
 
 describe('create-wdk-module', () => {
   beforeEach(async () => {
-    outputDir = await fs.mkdtemp(path.join(os.tmpdir(), SEED_NAME))
-    process.chdir(outputDir)
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), SEED_NAME))
+    outputDir = tempDir
+    process.chdir(tempDir)
   })
 
   afterEach(async () => {
-    await fs.remove(outputDir)
+    process.chdir(ORIGINAL_CWD)
+    await fs.remove(tempDir)
   })
 
   describe('wallet module', () => {
