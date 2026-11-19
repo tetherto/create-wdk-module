@@ -86,7 +86,7 @@ describe('create-wdk-module', () => {
       expect(pkg.name).toBe(EXPECTED_PACKAGE_NAME)
       expect(pkg.description).toBe(EXPECTED_DESCRIPTION)
       expect(pkg.keywords).toContain('stellar')
-      expect(pkg.dependencies['@tetherto/wdk-wallet']).toBe('^1.0.0-beta.1')
+      expect(pkg.dependencies['@tetherto/wdk-wallet']).toBe('^1.0.0-beta.26')
       expect(pkg.dependencies.bip39).toBe('^3.1.0')
     })
 

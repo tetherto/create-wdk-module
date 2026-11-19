@@ -53,8 +53,11 @@ export default class {{pascalCase NAME}}Protocol extends FiatProtocol {
    * @overload
    * @param {IWalletAccount} account - The wallet account to use to interact with the protocol.
    */
+  // eslint-disable-next-line no-useless-constructor
   constructor (account) {
     super(account)
+
+    // TODO: Initialize protocol-specific state (e.g. API clients or contracts).
   }
 
   /**
