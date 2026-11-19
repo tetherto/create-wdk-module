@@ -2,12 +2,20 @@ import { jest } from '@jest/globals'
 
 let mockPromptsReturn = {}
 let mockOnCancel = null
+let mockQuestions = []
+
+const mockIsOfficialPackage = jest.fn()
 
 jest.unstable_mockModule('prompts', () => ({
-  default: jest.fn(async (_questions, opts) => {
+  default: jest.fn(async (questions, opts) => {
+    mockQuestions = questions
     mockOnCancel = opts?.onCancel
     return mockPromptsReturn
   })
+}))
+
+jest.unstable_mockModule('../src/utilities/registry.js', () => ({
+  isOfficialPackage: mockIsOfficialPackage
 }))
 
 const { runPrompts } = await import('../src/run-prompts.js')
@@ -91,6 +99,32 @@ describe('runPrompts', () => {
     expect(result.blockchain).toBe('mychain')
   })
 
+  test('should use the variant answer from prompts for wallet modules', async () => {
+    mockPromptsReturn = {
+      type: 'wallet',
+      name: 'evm',
+      variant: 'railgun',
+      git: true
+    }
+
+    const result = await runPrompts({})
+
+    expect(result.variant).toBe('railgun')
+  })
+
+  test('should leave the variant undefined when the answer is empty', async () => {
+    mockPromptsReturn = {
+      type: 'wallet',
+      name: 'stellar',
+      variant: '',
+      git: true
+    }
+
+    const result = await runPrompts({})
+
+    expect(result.variant).toBeUndefined()
+  })
+
   test('should throw cancelled when the user cancels the prompts', async () => {
     mockPromptsReturn = {}
 
@@ -99,5 +133,111 @@ describe('runPrompts', () => {
 
     expect(mockOnCancel).toBeInstanceOf(Function)
     expect(() => mockOnCancel()).toThrow('cancelled')
+  })
+
+  describe('wallet variant prompt', () => {
+    async function getVariantQuestion () {
+      await runPrompts({ type: 'wallet', name: 'evm' })
+
+      const question = mockQuestions.find(q => q.name === 'variant')
+      question.type(undefined, {})
+
+      return question
+    }
+
+    beforeEach(() => {
+      mockIsOfficialPackage.mockReset()
+    })
+
+    test('should ask again if the name without a variant is an official package', async () => {
+      mockIsOfficialPackage.mockResolvedValue(true)
+
+      const question = await getVariantQuestion()
+
+      expect(await question.validate('')).toMatch('wdk-wallet-evm is the name of an official WDK package')
+      expect(mockIsOfficialPackage).toHaveBeenCalledWith('wdk-wallet-evm')
+    })
+
+    test('should accept a variant that is not an official package', async () => {
+      mockIsOfficialPackage.mockResolvedValue(false)
+
+      const question = await getVariantQuestion()
+
+      expect(await question.validate('railgun')).toBe(true)
+      expect(mockIsOfficialPackage).toHaveBeenCalledWith('wdk-wallet-evm-railgun')
+    })
+
+    test('should accept the name if the registry cannot be reached', async () => {
+      mockIsOfficialPackage.mockResolvedValue(undefined)
+
+      const question = await getVariantQuestion()
+
+      expect(await question.validate('')).toBe(true)
+    })
+
+    test('should reject an invalid variant without checking the registry', async () => {
+      const question = await getVariantQuestion()
+
+      expect(await question.validate('Railgun!')).toMatch('Module names must start with a letter')
+      expect(mockIsOfficialPackage).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('name prompt', () => {
+    async function getNameQuestion (type) {
+      await runPrompts({ type })
+
+      const question = mockQuestions.find(q => q.name === 'name')
+      question.type(undefined, {})
+
+      return question
+    }
+
+    beforeEach(() => {
+      mockIsOfficialPackage.mockReset()
+    })
+
+    test.each([
+      ['fiat', 'moonpay', 'wdk-protocol-fiat-moonpay'],
+      ['swidge', 'lifi', 'wdk-protocol-swidge-lifi'],
+      ['sda', 'rhino', 'wdk-protocol-sda-rhino']
+    ])('should ask again if the %s name is an official package', async (type, name, moduleName) => {
+      mockIsOfficialPackage.mockResolvedValue(true)
+
+      const question = await getNameQuestion(type)
+
+      expect(await question.validate(name)).toBe(`${moduleName} is the name of an official WDK package. Choose a different name.`)
+      expect(mockIsOfficialPackage).toHaveBeenCalledWith(moduleName)
+    })
+
+    test('should accept a name that is not an official package', async () => {
+      mockIsOfficialPackage.mockResolvedValue(false)
+
+      const question = await getNameQuestion('fiat')
+
+      expect(await question.validate('testramp')).toBe(true)
+    })
+
+    test('should accept the name if the registry cannot be reached', async () => {
+      mockIsOfficialPackage.mockResolvedValue(undefined)
+
+      const question = await getNameQuestion('sda')
+
+      expect(await question.validate('testsda')).toBe(true)
+    })
+
+    test.each(['wallet', 'swap', 'bridge', 'lending'])('should not check the registry for %s names', async (type) => {
+      const question = await getNameQuestion(type)
+
+      expect(await question.validate('stellar')).toBe(true)
+      expect(mockIsOfficialPackage).not.toHaveBeenCalled()
+    })
+
+    test('should reject an invalid name without checking the registry', async () => {
+      const question = await getNameQuestion('fiat')
+
+      expect(await question.validate('MoonPay!')).toMatch('Module names must start with a letter')
+      expect(mockIsOfficialPackage).not.toHaveBeenCalled()
+    })
   })
 })

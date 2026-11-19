@@ -16,6 +16,8 @@
 
 import prompts from 'prompts'
 
+import { generatePackageName } from './create-wdk-module.js'
+import { isOfficialPackage } from './utilities/registry.js'
 import { validateScope, validateModuleName } from './utilities/validation.js'
 
 import { CancelError } from './errors.js'
@@ -51,8 +53,14 @@ export async function runPrompts (options, useDefaults = false) {
   }
 
   if (!options.name) {
+    let moduleType
+
     questions.push({
-      type: 'text',
+      type: (_prev, values) => {
+        moduleType = options.type || values.type
+
+        return 'text'
+      },
       name: 'name',
       message: (_prev, values) => {
         switch (options.type || values.type) {
@@ -74,9 +82,53 @@ export async function runPrompts (options, useDefaults = false) {
             return 'What is the provider name? (e.g., "rhino", "orchestra")'
         }
       },
-      validate: (value) => {
+      validate: async (value) => {
         const { valid, errors } = validateModuleName(value)
-        return valid || errors[0]
+
+        if (!valid) {
+          return errors[0]
+        }
+
+        if (['fiat', 'swidge', 'sda'].includes(moduleType)) {
+          const moduleName = generatePackageName({ type: moduleType, name: value })
+
+          if (await isOfficialPackage(moduleName)) {
+            return `${moduleName} is the name of an official WDK package. Choose a different name.`
+          }
+        }
+
+        return true
+      }
+    })
+  }
+
+  if (options.variant === undefined && !useDefaults) {
+    let walletName
+
+    questions.push({
+      type: (_prev, values) => {
+        walletName = options.name || values.name
+
+        return (options.type || values.type) === 'wallet' ? 'text' : null
+      },
+      name: 'variant',
+      message: (_prev, values) => `Wallet variant (leave empty for none, e.g., "railgun" for wdk-wallet-${options.name || values.name}-railgun):`,
+      validate: async (value) => {
+        if (value) {
+          const { valid, errors } = validateModuleName(value)
+
+          if (!valid) {
+            return errors[0]
+          }
+        }
+
+        const moduleName = generatePackageName({ type: 'wallet', name: walletName, variant: value || undefined })
+
+        if (await isOfficialPackage(moduleName)) {
+          return `${moduleName} is the name of an official WDK package. Enter a variant (e.g., "railgun" for ${moduleName}-railgun).`
+        }
+
+        return true
       }
     })
   }
@@ -145,6 +197,7 @@ export async function runPrompts (options, useDefaults = false) {
   return {
     type: options.type ?? answers.type,
     name: options.name ?? answers.name,
+    variant: options.variant ?? (answers.variant || undefined),
     blockchain: options.blockchain ?? answers.blockchainOther ?? answers.blockchain,
     scope: options.scope ?? answers.scope,
     git: options.git ?? answers.git ?? true

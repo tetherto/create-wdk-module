@@ -39,7 +39,8 @@ import { gitInit, getGitAuthor, isGitAvailable } from './utilities/git.js'
 /**
  * @typedef {Object} CreateWdkModuleWalletOptions
  * @property {'wallet'} type - The module type to create.
- * @property {string} name - The wallet's name.
+ * @property {string} name - The wallet's blockchain name.
+ * @property {string} [variant] - The wallet variant (e.g., 'railgun' for 'wdk-wallet-evm-railgun').
  */
 
 /**
@@ -72,17 +73,27 @@ const ROOT_DIR = path.dirname(fileURLToPath(import.meta.url))
 const TEMPLATES_DIR = path.resolve(ROOT_DIR, '../templates')
 
 /**
+ * Returns the wallet's name including its variant (e.g., 'evm-railgun').
+ *
+ * @param {Pick<CreateWdkModuleOptions, 'name' | 'variant'>} options - The module options.
+ * @returns {string} The wallet name.
+ */
+function getWalletName ({ name, variant }) {
+  return variant ? `${name}-${variant}` : name
+}
+
+/**
  * Generates a full package name from module options.
  *
  * @param {Omit<CreateWdkModuleOptions, 'git'>} options - The module options.
  * @returns {string} The package name.
  */
-function generatePackageName ({ type, name, blockchain, scope }) {
+export function generatePackageName ({ type, name, variant, blockchain, scope }) {
   let packageName
 
   switch (type) {
     case 'wallet':
-      packageName = `wdk-wallet-${name}`
+      packageName = `wdk-wallet-${getWalletName({ name, variant })}`
       break
 
     case 'swap':
@@ -180,7 +191,7 @@ function getInstallCommand (packageManager) {
  * @returns {Promise<void>}
  */
 export async function createWdkModule (options) {
-  const { type, name, blockchain, scope, git } = options
+  const { type, name, variant, blockchain, scope, git } = options
 
   const packageName = generatePackageName(options)
 
@@ -191,7 +202,7 @@ export async function createWdkModule (options) {
   const context = {
     PACKAGE_NAME: packageName,
     MODULE_NAME: moduleName,
-    NAME: name,
+    NAME: type === 'wallet' ? getWalletName({ name, variant }) : name,
     BLOCKCHAIN: blockchain,
     DESCRIPTION: generateDescription(type, { name, blockchain }),
     YEAR: new Date().getFullYear().toString(),
@@ -237,6 +248,6 @@ export async function createWdkModule (options) {
   console.log(pc.dim(`  ${getInstallCommand(context.PACKAGE_MANAGER)}`))
   console.log(pc.dim('  npm test'))
   console.log()
-  console.log(pc.dim('Documentation: https://docs.wallet.tether.io/sdk/wallet-modules'))
+  console.log(pc.dim('Documentation: https://docs.wdk.tether.io/tools/create-wdk-module/'))
   console.log()
 }

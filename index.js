@@ -21,7 +21,8 @@ import pc from 'picocolors'
 import { Command } from 'commander'
 
 import { runPrompts } from './src/run-prompts.js'
-import { createWdkModule } from './src/create-wdk-module.js'
+import { createWdkModule, generatePackageName } from './src/create-wdk-module.js'
+import { isOfficialPackage, OFFICIAL_SCOPE } from './src/utilities/registry.js'
 import { validateModuleType, validateModuleName, validateScope } from './src/utilities/validation.js'
 
 import { CancelError } from './src/errors.js'
@@ -34,7 +35,7 @@ program
   .version('1.0.0-beta.1')
   .argument('[type]', 'Module type (wallet/swap/bridge/lending/fiat/swidge/sda)')
   .argument('[name]', 'Module name')
-  .argument('[blockchain]', 'Target blockchain (for protocol modules)')
+  .argument('[blockchain]', 'Target blockchain (swap/bridge/lending) or variant (wallet, e.g., "railgun")')
   .option('-s, --scope <SCOPE>', 'npm scope (e.g., @myorg)')
   .option('--git', 'Initialize git repository', undefined)
   .option('--no-git', 'Skip initialization of git repository')
@@ -60,7 +61,7 @@ program
       const { valid, errors } = validateModuleName(blockchain)
 
       if (!valid) {
-        console.error(pc.red('Invalid blockchain:'))
+        console.error(pc.red(type === 'wallet' ? 'Invalid variant:' : 'Invalid blockchain:'))
         errors.forEach(error => console.error(pc.red(`  - ${error}`)))
         process.exit(1)
       }
@@ -77,7 +78,25 @@ program
     }
 
     try {
-      const options = await runPrompts({ type, name, blockchain, scope, git }, yes)
+      const options = await runPrompts(type === 'wallet'
+        ? { type, name, variant: blockchain, scope, git }
+        : { type, name, blockchain, scope, git }, yes)
+
+      const moduleName = generatePackageName({ ...options, scope: undefined })
+
+      const isTaken = await isOfficialPackage(moduleName)
+
+      if (isTaken) {
+        console.error(pc.red(`${moduleName} is the name of an official WDK package (${OFFICIAL_SCOPE}/${moduleName}).`))
+        console.error(pc.dim(options.type === 'wallet'
+          ? `Add a variant, e.g. "create-wdk-module wallet ${options.name} <variant>" creates wdk-wallet-${options.name}-<variant>.`
+          : 'Choose a different name.'))
+        process.exit(1)
+      }
+
+      if (isTaken === undefined) {
+        console.warn(pc.yellow(`Couldn't reach the npm registry to check that ${moduleName} isn't an official WDK package name.`))
+      }
 
       await createWdkModule(options)
     } catch (error) {

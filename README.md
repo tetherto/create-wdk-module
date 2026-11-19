@@ -18,6 +18,9 @@ Or with specific options:
 # Create a wallet module
 npx @tetherto/create-wdk-module@latest wallet stellar
 
+# Create a wallet variant for a chain WDK already supports
+npx @tetherto/create-wdk-module@latest wallet evm railgun
+
 # Create a swap protocol module
 npx @tetherto/create-wdk-module@latest swap jupiter solana
 
@@ -37,13 +40,23 @@ npx @tetherto/create-wdk-module@latest wallet stellar --scope @myorg
 | `swidge` | Cross-chain swap (swap + bridge) | `wdk-protocol-swidge-lifi` |
 | `sda` | Smart deposit address provider | `wdk-protocol-sda-rhino` |
 
+## Naming
+
+| Type | Package name |
+|------|--------------|
+| `wallet` | `wdk-wallet-<chain>[-<variant>]` |
+| `swap`, `bridge`, `lending` | `wdk-protocol-<type>-<name>-<chain>` |
+| `fiat`, `swidge`, `sda` | `wdk-protocol-<type>-<name>` |
+
+The CLI refuses names that are already used by an official WDK package (for example `wdk-wallet-evm` or `wdk-protocol-swap-velora-evm`), whatever the scope. To build on a chain WDK already supports, add a variant: `wallet evm railgun` creates `wdk-wallet-evm-railgun`. In interactive mode, the wallet variant prompt and the fiat, swidge and SDA name prompts ask again until the name is free. The check needs the npm registry; if it can't be reached, the CLI prints a warning and continues.
+
 ## CLI Options
 
 | Option | Alias | Description | Default |
 |--------|-------|-------------|---------|
 | `[type]` | | Module type | (prompt) |
 | `[name]` | | Module/protocol name | (prompt) |
-| `[blockchain]` | | Target blockchain | (prompt) |
+| `[blockchain]` | | Target blockchain (swap, bridge, lending) or variant (wallet) | (prompt) |
 | `--scope <scope>` | `-s` | npm scope (e.g., @myorg) | none |
 | `--git` | | Initialize git repository | true |
 | `--no-git` | | Skip git initialization | |
@@ -72,6 +85,9 @@ $ npx @tetherto/create-wdk-module@latest
 ? What is the blockchain name? (e.g., "stellar", "solana")
   > stellar
 
+? Wallet variant (leave empty for none, e.g., "railgun" for wdk-wallet-stellar-railgun):
+  >
+
 ? npm scope (leave empty for none, e.g., @myorg):
   >
 
@@ -90,7 +106,7 @@ Next steps:
   npm install
   npm test
 
-Documentation: https://docs.wallet.tether.io/sdk/wallet-modules
+Documentation: https://docs.wdk.tether.io/tools/create-wdk-module/
 ```
 
 ## Generated Project Structure
