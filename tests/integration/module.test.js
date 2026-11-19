@@ -64,7 +64,7 @@ describe('create-wdk-module', () => {
       expect(await fileExists('index.js')).toBe(true)
       expect(await fileExists('bare.js')).toBe(true)
       expect(await fileExists('LICENSE')).toBe(true)
-      expect(await fileExists('tsconfig.json')).toBe(false)
+      expect(await fileExists('tsconfig.json')).toBe(true)
       expect(await fileExists('README.md')).toBe(true)
       expect(await fileExists('src/wallet-manager-stellar.js')).toBe(true)
       expect(await fileExists('src/wallet-account-stellar.js')).toBe(true)

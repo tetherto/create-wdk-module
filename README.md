@@ -127,7 +127,8 @@ wdk-wallet-stellar/
 ├── index.js
 ├── LICENSE
 ├── package.json
-└── README.md
+├── README.md
+└── tsconfig.json
 ```
 
 ### Protocol Modules

@@ -67,7 +67,7 @@ npm test
 npm run lint
 ```
 
-The type declarations in `types/` are written by hand. Update them whenever the public API in `src/` changes.
+The type declarations in `types/` are maintained by hand: update them whenever the public API in `src/` changes. `npm run build:types` can generate a starting point with `tsc`, but it may drop or change declarations, so review its output before committing it.
 
 ## License
 
