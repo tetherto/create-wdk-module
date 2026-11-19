@@ -53,8 +53,14 @@ export async function runPrompts (options, useDefaults = false) {
   }
 
   if (!options.name) {
+    let moduleType
+
     questions.push({
-      type: 'text',
+      type: (_prev, values) => {
+        moduleType = options.type || values.type
+
+        return 'text'
+      },
       name: 'name',
       message: (_prev, values) => {
         switch (options.type || values.type) {
@@ -76,9 +82,22 @@ export async function runPrompts (options, useDefaults = false) {
             return 'What is the provider name? (e.g., "rhino", "orchestra")'
         }
       },
-      validate: (value) => {
+      validate: async (value) => {
         const { valid, errors } = validateModuleName(value)
-        return valid || errors[0]
+
+        if (!valid) {
+          return errors[0]
+        }
+
+        if (['fiat', 'swidge', 'sda'].includes(moduleType)) {
+          const moduleName = generatePackageName({ type: moduleType, name: value })
+
+          if (await isOfficialPackage(moduleName)) {
+            return `${moduleName} is the name of an official WDK package. Choose a different name.`
+          }
+        }
+
+        return true
       }
     })
   }

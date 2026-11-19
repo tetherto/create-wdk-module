@@ -48,7 +48,7 @@ npx @tetherto/create-wdk-module@latest wallet stellar --scope @myorg
 | `swap`, `bridge`, `lending` | `wdk-protocol-<type>-<name>-<chain>` |
 | `fiat`, `swidge`, `sda` | `wdk-protocol-<type>-<name>` |
 
-The CLI refuses names that are already used by an official WDK package (for example `wdk-wallet-evm` or `wdk-protocol-swap-velora-evm`), whatever the scope. To build on a chain WDK already supports, add a variant: `wallet evm railgun` creates `wdk-wallet-evm-railgun`. In interactive mode, the wallet variant prompt asks again until the name is free. The check needs the npm registry; if it can't be reached, the CLI prints a warning and continues.
+The CLI refuses names that are already used by an official WDK package (for example `wdk-wallet-evm` or `wdk-protocol-swap-velora-evm`), whatever the scope. To build on a chain WDK already supports, add a variant: `wallet evm railgun` creates `wdk-wallet-evm-railgun`. In interactive mode, the wallet variant prompt and the fiat, swidge and SDA name prompts ask again until the name is free. The check needs the npm registry; if it can't be reached, the CLI prints a warning and continues.
 
 ## CLI Options
 

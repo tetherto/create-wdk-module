@@ -182,4 +182,62 @@ describe('runPrompts', () => {
       expect(mockIsOfficialPackage).not.toHaveBeenCalled()
     })
   })
+
+  describe('name prompt', () => {
+    async function getNameQuestion (type) {
+      await runPrompts({ type })
+
+      const question = mockQuestions.find(q => q.name === 'name')
+      question.type(undefined, {})
+
+      return question
+    }
+
+    beforeEach(() => {
+      mockIsOfficialPackage.mockReset()
+    })
+
+    test.each([
+      ['fiat', 'moonpay', 'wdk-protocol-fiat-moonpay'],
+      ['swidge', 'lifi', 'wdk-protocol-swidge-lifi'],
+      ['sda', 'rhino', 'wdk-protocol-sda-rhino']
+    ])('should ask again if the %s name is an official package', async (type, name, moduleName) => {
+      mockIsOfficialPackage.mockResolvedValue(true)
+
+      const question = await getNameQuestion(type)
+
+      expect(await question.validate(name)).toBe(`${moduleName} is the name of an official WDK package. Choose a different name.`)
+      expect(mockIsOfficialPackage).toHaveBeenCalledWith(moduleName)
+    })
+
+    test('should accept a name that is not an official package', async () => {
+      mockIsOfficialPackage.mockResolvedValue(false)
+
+      const question = await getNameQuestion('fiat')
+
+      expect(await question.validate('testramp')).toBe(true)
+    })
+
+    test('should accept the name if the registry cannot be reached', async () => {
+      mockIsOfficialPackage.mockResolvedValue(undefined)
+
+      const question = await getNameQuestion('sda')
+
+      expect(await question.validate('testsda')).toBe(true)
+    })
+
+    test.each(['wallet', 'swap', 'bridge', 'lending'])('should not check the registry for %s names', async (type) => {
+      const question = await getNameQuestion(type)
+
+      expect(await question.validate('stellar')).toBe(true)
+      expect(mockIsOfficialPackage).not.toHaveBeenCalled()
+    })
+
+    test('should reject an invalid name without checking the registry', async () => {
+      const question = await getNameQuestion('fiat')
+
+      expect(await question.validate('MoonPay!')).toMatch('Module names must start with a letter')
+      expect(mockIsOfficialPackage).not.toHaveBeenCalled()
+    })
+  })
 })
