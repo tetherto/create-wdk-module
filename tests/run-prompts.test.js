@@ -2,12 +2,20 @@ import { jest } from '@jest/globals'
 
 let mockPromptsReturn = {}
 let mockOnCancel = null
+let mockQuestions = []
+
+const mockIsOfficialPackage = jest.fn()
 
 jest.unstable_mockModule('prompts', () => ({
-  default: jest.fn(async (_questions, opts) => {
+  default: jest.fn(async (questions, opts) => {
+    mockQuestions = questions
     mockOnCancel = opts?.onCancel
     return mockPromptsReturn
   })
+}))
+
+jest.unstable_mockModule('../src/utilities/registry.js', () => ({
+  isOfficialPackage: mockIsOfficialPackage
 }))
 
 const { runPrompts } = await import('../src/run-prompts.js')
@@ -125,5 +133,53 @@ describe('runPrompts', () => {
 
     expect(mockOnCancel).toBeInstanceOf(Function)
     expect(() => mockOnCancel()).toThrow('cancelled')
+  })
+
+  describe('wallet variant prompt', () => {
+    async function getVariantQuestion () {
+      await runPrompts({ type: 'wallet', name: 'evm' })
+
+      const question = mockQuestions.find(q => q.name === 'variant')
+      question.type(undefined, {})
+
+      return question
+    }
+
+    beforeEach(() => {
+      mockIsOfficialPackage.mockReset()
+    })
+
+    test('should ask again if the name without a variant is an official package', async () => {
+      mockIsOfficialPackage.mockResolvedValue(true)
+
+      const question = await getVariantQuestion()
+
+      expect(await question.validate('')).toMatch('wdk-wallet-evm is the name of an official WDK package')
+      expect(mockIsOfficialPackage).toHaveBeenCalledWith('wdk-wallet-evm')
+    })
+
+    test('should accept a variant that is not an official package', async () => {
+      mockIsOfficialPackage.mockResolvedValue(false)
+
+      const question = await getVariantQuestion()
+
+      expect(await question.validate('railgun')).toBe(true)
+      expect(mockIsOfficialPackage).toHaveBeenCalledWith('wdk-wallet-evm-railgun')
+    })
+
+    test('should accept the name if the registry cannot be reached', async () => {
+      mockIsOfficialPackage.mockResolvedValue(undefined)
+
+      const question = await getVariantQuestion()
+
+      expect(await question.validate('')).toBe(true)
+    })
+
+    test('should reject an invalid variant without checking the registry', async () => {
+      const question = await getVariantQuestion()
+
+      expect(await question.validate('Railgun!')).toMatch('Module names must start with a letter')
+      expect(mockIsOfficialPackage).not.toHaveBeenCalled()
+    })
   })
 })

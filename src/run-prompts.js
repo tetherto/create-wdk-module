@@ -16,6 +16,8 @@
 
 import prompts from 'prompts'
 
+import { generatePackageName } from './create-wdk-module.js'
+import { isOfficialPackage } from './utilities/registry.js'
 import { validateScope, validateModuleName } from './utilities/validation.js'
 
 import { CancelError } from './errors.js'
@@ -82,17 +84,32 @@ export async function runPrompts (options, useDefaults = false) {
   }
 
   if (options.variant === undefined && !useDefaults) {
+    let walletName
+
     questions.push({
-      type: (_prev, values) => (options.type || values.type) === 'wallet' ? 'text' : null,
+      type: (_prev, values) => {
+        walletName = options.name || values.name
+
+        return (options.type || values.type) === 'wallet' ? 'text' : null
+      },
       name: 'variant',
       message: (_prev, values) => `Wallet variant (leave empty for none, e.g., "railgun" for wdk-wallet-${options.name || values.name}-railgun):`,
-      validate: (value) => {
-        if (!value) {
-          return true
+      validate: async (value) => {
+        if (value) {
+          const { valid, errors } = validateModuleName(value)
+
+          if (!valid) {
+            return errors[0]
+          }
         }
 
-        const { valid, errors } = validateModuleName(value)
-        return valid || errors[0]
+        const moduleName = generatePackageName({ type: 'wallet', name: walletName, variant: value || undefined })
+
+        if (await isOfficialPackage(moduleName)) {
+          return `${moduleName} is the name of an official WDK package. Enter a variant (e.g., "railgun" for ${moduleName}-railgun).`
+        }
+
+        return true
       }
     })
   }
