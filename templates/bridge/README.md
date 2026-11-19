@@ -69,6 +69,8 @@ npm test
 npm run lint
 ```
 
+The type declarations in `types/` are maintained by hand. Update them whenever the public API in `src/` changes, and check them with the `wdk-review-dts` skill from [wdk-agent-skills](https://github.com/tetherto/wdk-agent-skills) (`npx skills add tetherto/wdk-agent-skills`).
+
 ## License
 
 Apache-2.0
