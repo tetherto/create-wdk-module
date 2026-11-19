@@ -103,8 +103,6 @@ export async function compileTemplate ({ templateDir, targetDir, context }) {
   const filenames = await getAllFilenames(templateDir)
 
   for (const filename of filenames) {
-    // Handlebars treats a backslash before '{{' as an escape, so Windows
-    // separators must become forward slashes before compiling the path.
     const relativePath = path.relative(templateDir, filename).split(path.sep).join('/')
 
     let compiledRelativePath = compile(relativePath, context)

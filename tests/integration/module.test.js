@@ -50,7 +50,6 @@ describe('create-wdk-module', () => {
   })
 
   afterEach(async () => {
-    // Windows can't remove the current working directory.
     process.chdir(ORIGINAL_CWD)
     await fs.remove(tempDir)
   })
