@@ -140,10 +140,12 @@ wdk-wallet-stellar/
 ├── .gitignore
 ├── .npmignore
 ├── bare.js
+├── CHANGELOG.md
 ├── index.js
 ├── LICENSE
 ├── package.json
 ├── README.md
+├── SECURITY.md
 └── tsconfig.json
 ```
 
