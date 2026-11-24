@@ -69,6 +69,8 @@ describe('create-wdk-module', () => {
       expect(await fileExists('index.js')).toBe(true)
       expect(await fileExists('bare.js')).toBe(true)
       expect(await fileExists('LICENSE')).toBe(true)
+      expect(await fileExists('CHANGELOG.md')).toBe(true)
+      expect(await fileExists('SECURITY.md')).toBe(true)
       expect(await fileExists('tsconfig.json')).toBe(true)
       expect(await fileExists('README.md')).toBe(true)
       expect(await fileExists('src/wallet-manager-stellar.js')).toBe(true)
@@ -133,6 +135,8 @@ describe('create-wdk-module', () => {
       expect(await fileExists('src/jupiter-protocol-solana.js')).toBe(true)
       expect(await fileExists('types/index.d.ts')).toBe(true)
       expect(await fileExists('tests/jupiter-protocol-solana.test.js')).toBe(true)
+      expect(await fileExists('CHANGELOG.md')).toBe(true)
+      expect(await fileExists('SECURITY.md')).toBe(true)
     })
 
     test('should replace all placeholders in the generated package.json', async () => {
@@ -357,6 +361,28 @@ describe('create-wdk-module', () => {
       await createWdkModule({ type: 'wallet', name: 'nogittest', git: false })
 
       expect(await fileExists('wdk-wallet-nogittest/.git')).toBe(false)
+    })
+  })
+
+  describe('common files', () => {
+    beforeEach(async () => {
+      await createWdkModule({ type: 'swap', name: 'jupiter', blockchain: 'solana', git: false })
+      outputDir = path.join(outputDir, 'wdk-protocol-swap-jupiter-solana')
+    })
+
+    test('should name the package in the changelog and the security policy', async () => {
+      const changelog = await readGeneratedFile('CHANGELOG.md')
+      const security = await readGeneratedFile('SECURITY.md')
+
+      expect(changelog).toContain('`wdk-protocol-swap-jupiter-solana`')
+      expect(changelog).toContain('## [Unreleased]')
+      expect(security).toContain('`wdk-protocol-swap-jupiter-solana`')
+    })
+
+    test('should keep the github actions expression for the npm token in the publish workflow', async () => {
+      const workflow = await readGeneratedFile('.github/workflows/publish.yml')
+
+      expect(workflow).toContain('NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}')
     })
   })
 
